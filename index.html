@@ -244,7 +244,7 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
     <div><h4>Help</h4><p><a href="#" onclick="openCart();return false">Shopping cart</a></p><p><a href="#" onclick="openAdminLogin();return false">Owner login</a></p><p><span>Local WhatsApp ordering</span></p></div>
     <div><h4>About</h4><p>Premium fashion with a simple, personal ordering experience.</p></div>
   </div>
-  <div class="container footer-bottom"><span>© <span id="year"></span> Cloud Clothing</span><span>Local mode: data is stored in this browser.</span></div>
+  <div class="container footer-bottom"><span>© <span id="year"></span> Cloud Clothing</span><span><span id="dataModeStatus">Connecting to cloud…</span></span></div>
 </footer>
 </div>
 
@@ -265,7 +265,7 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
     <button class="side-link" onclick="exitAdmin()">← <span>Back to Store</span></button>
   </aside>
   <section class="admin-main">
-    <div class="admin-top"><div style="display:flex;align-items:center;gap:10px"><button class="icon-btn mobile-admin-toggle" id="adminMenuBtn">☰</button><div><h1 id="adminPageTitle">Dashboard</h1><div class="admin-note">Local mode: data is stored in this browser.</div></div></div><button class="btn btn-primary" onclick="openProductFormGuard()">+ Add Product</button></div>
+    <div class="admin-top"><div style="display:flex;align-items:center;gap:10px"><button class="icon-btn mobile-admin-toggle" id="adminMenuBtn">☰</button><div><h1 id="adminPageTitle">Dashboard</h1><div class="admin-note" id="adminDataMode">Connecting to cloud…</div></div></div><button class="btn btn-primary" onclick="openProductFormGuard()">+ Add Product</button></div>
     <div id="adminContent"></div>
   </section>
 </div>
@@ -676,22 +676,38 @@ function openProductForm(id=null){
   $("productModal").classList.add("open");
 }
 
+async function cloudFetch(path, options={}){
+  const headers={
+    apikey:SUPABASE_PUBLISHABLE_KEY,
+    ...((options.body!==undefined)?{'Content-Type':'application/json'}:{}),
+    ...(options.headers||{})
+  };
+  const res=await fetch(SUPABASE_URL+path,{...options,headers});
+  const text=await res.text();
+  let body=null;
+  try{ body=text?JSON.parse(text):null; }catch(_){ body=text; }
+  if(!res.ok){
+    const msg=typeof body==='string'?body:(body?.message||body?.error_description||body?.hint||body?.details||'Request failed');
+    throw new Error('Supabase '+res.status+': '+msg);
+  }
+  return body;
+}
+
 async function fetchCloudProducts(){
-  const {data:rows,error}=await supabaseClient.from("products").select("*").order("created_at",{ascending:true});
-  if(error) throw error;
+  const rows=await cloudFetch('/rest/v1/products?select=*&order=created_at.asc');
   return Array.isArray(rows)?rows:[];
 }
 
 function normalizeCloudProduct(row, localFallback={}){
   return {
     id:String(row.id),
-    name:row.name || localFallback.name || "Untitled Product",
-    category:row.category || localFallback.category || "Shirts",
-    collection:row.collection || localFallback.collection || "",
+    name:row.name || localFallback.name || 'Untitled Product',
+    category:row.category || localFallback.category || 'Shirts',
+    collection:row.collection || localFallback.collection || '',
     price:Number(row.price ?? localFallback.price ?? 0),
     oldPrice:Number(localFallback.oldPrice||0),
     stock:Math.max(0,Number(row.stock ?? localFallback.stock ?? 0)),
-    description:row.description ?? localFallback.description ?? "",
+    description:row.description ?? localFallback.description ?? '',
     image:row.image || localFallback.image || FALLBACK_IMG,
     images:Array.isArray(localFallback.images)?localFallback.images:[],
     featured:!!localFallback.featured,isNew:!!localFallback.isNew,sale:!!localFallback.sale,
@@ -702,46 +718,46 @@ function normalizeCloudProduct(row, localFallback={}){
 
 function cloudPayload(p){
   return {
-    name:p.name,
-    category:p.category,
-    collection:p.collection || "",
-    price:Number(p.price||0),
-    stock:Math.max(0,Number(p.stock||0)),
-    description:p.description || "",
-    image:p.image || ""
+    name:p.name, category:p.category, collection:p.collection || '',
+    price:Number(p.price||0), stock:Math.max(0,Number(p.stock||0)),
+    description:p.description || '', image:p.image || ''
   };
 }
 
 async function uploadCloudImage(file){
-  const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg";
-  const path="products/"+Date.now()+"_"+Math.random().toString(36).slice(2,9)+"."+ext;
-  const {error}=await supabaseClient.storage.from("product-images").upload(path,file,{upsert:false,contentType:file.type||"image/jpeg"});
-  if(error) throw error;
-  const {data}=supabaseClient.storage.from("product-images").getPublicUrl(path);
-  return data.publicUrl;
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+  const path='products/'+Date.now()+'_'+Math.random().toString(36).slice(2,9)+'.'+ext;
+  const res=await fetch(SUPABASE_URL+'/storage/v1/object/product-images/'+encodeURIComponent(path),{
+    method:'POST', headers:{apikey:SUPABASE_PUBLISHABLE_KEY,'x-upsert':'false','Content-Type':file.type||'image/jpeg'}, body:file
+  });
+  if(!res.ok){ const t=await res.text(); throw new Error('Image upload failed: '+t); }
+  return SUPABASE_URL+'/storage/v1/object/public/product-images/'+path;
 }
 
 async function upsertCloudProduct(p){
   const numericId=Number(p.id);
   if(Number.isInteger(numericId) && numericId>0){
-    const {data,error}=await supabaseClient.from("products").update(cloudPayload(p)).eq("id",numericId).select("*").single();
-    if(error) throw error;
-    return normalizeCloudProduct(data,p);
+    const rows=await cloudFetch('/rest/v1/products?id=eq.'+encodeURIComponent(numericId),{
+      method:'PATCH', headers:{Prefer:'return=representation'}, body:JSON.stringify(cloudPayload(p))
+    });
+    if(!Array.isArray(rows)||!rows[0]) throw new Error('Product update returned no row');
+    return normalizeCloudProduct(rows[0],p);
   }
-  const {data,error}=await supabaseClient.from("products").insert(cloudPayload(p)).select("*").single();
-  if(error) throw error;
-  return normalizeCloudProduct(data,p);
-}
-
-async function deleteCloudProduct(id){
-  const numericId=Number(id);
-  if(!Number.isInteger(numericId)||numericId<=0)return;
-  const {error}=await supabaseClient.from("products").delete().eq("id",numericId);
-  if(error) throw error;
+  const rows=await cloudFetch('/rest/v1/products',{
+    method:'POST', headers:{Prefer:'return=representation'}, body:JSON.stringify(cloudPayload(p))
+  });
+  if(!Array.isArray(rows)||!rows[0]) throw new Error('Product insert returned no row');
+  return normalizeCloudProduct(rows[0],p);
 }
 
 async function initSupabaseProducts(){
+  const setMode=(msg,good=false)=>{
+    const a=$('adminDataMode'), b=$('dataModeStatus');
+    if(a){a.textContent=msg;a.style.color=good?'#167a45':'';}
+    if(b){b.textContent=msg;}
+  };
   try{
+    setMode('Connecting to Supabase…');
     const rows=await fetchCloudProducts();
     supabaseReady=true;
     const remoteById=new Map(rows.map(r=>[String(r.id),r]));
@@ -749,8 +765,6 @@ async function initSupabaseProducts(){
     const merged=[];
     const seenRemote=new Set();
 
-    // Keep existing local products and create cloud rows for products that do not
-    // yet have a numeric Supabase id. This preserves the locked UI and existing data.
     for(const local of localProducts){
       const remote=remoteById.get(String(local.id));
       if(remote){
@@ -762,22 +776,23 @@ async function initSupabaseProducts(){
           merged.push(saved);
           seenRemote.add(String(saved.id));
         }catch(err){
-          console.error("Cloud product migration failed",local,err);
+          console.error('Cloud product migration failed',local,err);
           merged.push(local);
         }
       }
     }
-    // Include products created directly in Supabase (including the Test Shirt).
     for(const row of rows){
       if(!seenRemote.has(String(row.id))) merged.push(normalizeCloudProduct(row));
     }
     data.products=merged;
-    persist("cloud product sync");
+    persist('cloud product sync');
     renderAll();
-    console.info("Cloud products connected:",data.products.length);
+    setMode('Cloud sync: ON',true);
+    console.info('Cloud products connected:',data.products.length);
   }catch(err){
     supabaseReady=false;
-    console.error("Supabase connection error",err);
+    setMode('Cloud sync: ERROR — '+(err?.message||err));
+    console.error('Supabase connection error',err);
   }
 }
 
