@@ -679,6 +679,7 @@ function openProductForm(id=null){
 async function cloudFetch(path, options={}){
   const headers={
     apikey:SUPABASE_PUBLISHABLE_KEY,
+    Authorization:'Bearer '+SUPABASE_PUBLISHABLE_KEY,
     ...((options.body!==undefined)?{'Content-Type':'application/json'}:{}),
     ...(options.headers||{})
   };
@@ -840,7 +841,8 @@ $("productForm").addEventListener("submit",async e=>{
     showToast(existing?"Product updated successfully":"Product added successfully");
   }catch(err){
     console.error("Product cloud save failed",err);
-    showToast(supabaseReady?"Could not save product to Supabase.":"Could not save product.","bad");
+    const detail=err?.message||String(err);
+    showToast(supabaseReady?"Supabase save error: "+detail:"Could not save product.","bad");
   }finally{btn.disabled=false;btn.textContent="Save Product";}
 });
 
