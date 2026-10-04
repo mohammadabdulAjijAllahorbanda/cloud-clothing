@@ -1082,8 +1082,7 @@ async function deleteCollection(id){
 
 function renderAdminSections(){
   const rows=(data.settings.sections||[]).slice().sort((a,b)=>a.order-b.order);
-  $("adminContent").innerHTML=`<div class="admin-panel"><div class="panel-head"><h3>Section Manager</h3><span class="muted">Drag to reorder</span></div><p class="muted" style="margin-bottom:13px">Drag sections into the order you want. Hide any section you do not need. Changes are saved to the cloud.</p><div class="section-manager" id="sectionManager">${rows.map(x=>`<div class="section-row" draggable="true" data-section-id="${escapeAttr(x.id)}"><span class="drag-handle">☷</span><div class="section-name"><strong>${escapeHtml(x.label)}</strong><span>${escapeHtml(x.id)}</span></div><button class="btn btn-outline" onclick="toggleStoreSection('${escapeAttr(x.id)}')">${x.visible===false?"Show":"Hide"}</button></div>`).join("")}</div></div>`;
-  const box=$("sectionManager");if(!box)return;
+  $("adminContent").innerHTML=`<div class="admin-panel"><div class="panel-head"><h3>
   let dragId=null;
   box.querySelectorAll('.section-row').forEach(row=>{
     row.addEventListener('dragstart',()=>{dragId=row.dataset.sectionId;row.classList.add('dragging');});
