@@ -63,6 +63,15 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
 .category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .category-card{min-height:190px;border:1px solid var(--border);border-radius:var(--radius);padding:22px;background:linear-gradient(145deg,var(--surface),var(--surface2));display:flex;flex-direction:column;justify-content:flex-end;transition:.25s;cursor:pointer}
 .category-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.category-circle-card{align-items:center;text-align:center;justify-content:flex-start;padding:18px 12px;min-height:210px}
+.category-image{width:118px;height:118px;border-radius:50%;overflow:hidden;background:var(--surface2);border:4px solid var(--surface);box-shadow:0 8px 24px rgba(50,35,20,.08);margin-bottom:13px}
+.category-image img{width:100%;height:100%;object-fit:cover}
+.admin-workspace{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:18px;align-items:start}
+.admin-preview-panel{position:sticky;top:18px;background:#fff;border:1px solid #e0dbd3;border-radius:16px;padding:12px;box-shadow:0 10px 35px rgba(50,35,20,.06)}
+.admin-preview-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:4px 4px 10px;border-bottom:1px solid #eee9e2;margin-bottom:10px}.admin-preview-head strong{display:block;font-size:13px}.admin-preview-head span{display:block;color:#888;font-size:10px;margin-top:3px}.preview-live-dot{color:#2f8a52!important;font-size:13px!important;margin-top:0!important}
+.preview-phone{border:1px solid #d9d2c8;border-radius:14px;overflow:hidden;background:var(--bg);max-height:720px;overflow-y:auto}.preview-phone-head{padding:10px 11px;background:var(--header);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:2}.preview-phone-logo{font-family:"Playfair Display",Georgia,serif;font-weight:700;font-size:14px}.preview-hero-mini{margin:10px;border-radius:12px;min-height:130px;background:center/cover no-repeat;position:relative;overflow:hidden}.preview-hero-mini:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,16,12,.65),transparent)}.preview-hero-mini>div{position:relative;z-index:1;color:#fff;padding:18px}.preview-cat-row{display:flex;gap:8px;overflow:hidden;padding:0 10px 10px}.preview-cat-item{min-width:55px;text-align:center;font-size:8px;color:var(--text)}.preview-cat-item img{width:48px;height:48px;border-radius:50%;object-fit:cover;display:block;margin:auto auto 4px}.preview-mini-section{padding:9px 10px}.preview-mini-title{font-weight:800;font-size:11px;margin-bottom:7px}.preview-mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.preview-mini-card{height:72px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);background-size:cover;background-position:center}.preview-section-badge{font-size:8px;color:#8a7a67;margin-left:5px}
+.section-manager{display:flex;flex-direction:column;gap:8px}.section-row{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid #e0dbd3;border-radius:12px;background:#fff;cursor:grab}.section-row.dragging{opacity:.5}.section-row .drag-handle{font-size:18px;color:#999}.section-row .section-name{flex:1}.section-row .section-name strong{display:block;font-size:13px}.section-row .section-name span{font-size:10px;color:#888}.section-row button{flex:none}.design-image-preview{display:block;width:110px;height:110px;object-fit:cover;border-radius:50%;margin:12px auto 0;background:#eee;border:3px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,.08)}
+.collection-card{background-size:cover;background-position:center}
 .category-card span{font-size:12px;color:var(--muted);margin-top:5px}
 .product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
 .product-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:0 5px 25px rgba(50,35,20,.04);transition:.25s}
@@ -149,7 +158,7 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
 .toast-wrap{position:fixed;right:18px;bottom:18px;z-index:300;display:flex;flex-direction:column;gap:8px}.toast{background:#25231f;color:#fff;border-radius:11px;padding:11px 15px;box-shadow:0 12px 30px #0003;font-size:12px;animation:toastIn .2s ease;max-width:320px}.toast.bad{background:#9a423e}@keyframes toastIn{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
 .mobile-admin-toggle{display:none}
 @media(max-width:1050px){.product-grid{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(3,1fr)}.category-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:800px){.navlinks{display:none}.mobile-toggle{display:grid}.nav-actions .whatsapp-nav{display:none}.product-grid{grid-template-columns:repeat(2,1fr)}.story-grid,.product-detail,.color-layout{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.collection-strip{grid-template-columns:1fr}.hero-card{min-height:540px}.admin-side{transform:translateX(-105%);transition:.25s}.admin-side.open{transform:none}.admin-main{margin-left:0;width:100%;padding:15px}.mobile-admin-toggle{display:inline-grid}.stats{grid-template-columns:repeat(2,1fr)}.admin-table-wrap{overflow:auto}.admin-table{min-width:720px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.preset-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:800px){.admin-workspace{grid-template-columns:1fr}.admin-preview-panel{position:relative;top:auto}.navlinks{display:none}.mobile-toggle{display:grid}.nav-actions .whatsapp-nav{display:none}.product-grid{grid-template-columns:repeat(2,1fr)}.story-grid,.product-detail,.color-layout{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.collection-strip{grid-template-columns:1fr}.hero-card{min-height:540px}.admin-side{transform:translateX(-105%);transition:.25s}.admin-side.open{transform:none}.admin-main{margin-left:0;width:100%;padding:15px}.mobile-admin-toggle{display:inline-grid}.stats{grid-template-columns:repeat(2,1fr)}.admin-table-wrap{overflow:auto}.admin-table{min-width:720px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.preset-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.container{width:min(100% - 22px,1180px)}.nav{height:65px}.logo{font-size:20px}.hero{padding-top:12px}.hero-card{border-radius:18px;min-height:550px}.hero-content{padding:28px 22px}.section{padding:55px 0}.category-grid{grid-template-columns:1fr 1fr}.category-card{min-height:150px;padding:15px}.product-grid{gap:9px}.product-info{padding:11px}.product-title{font-size:14px}.product-actions .btn{font-size:10px;padding:9px 6px}.footer-grid{grid-template-columns:1fr}.footer-bottom{display:block}.footer-bottom>*{margin:5px 0}.whatsapp-inner{display:block}.whatsapp-inner .btn{margin-top:12px}.stats{grid-template-columns:1fr 1fr}.admin-top{align-items:flex-start}.color-list{grid-template-columns:1fr}.login-card{padding:22px}}
 </style>
 </head>
@@ -172,6 +181,7 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
 </header>
 
 <main>
+<div id="storefrontSections">
 <section class="hero" id="home">
   <div class="container">
     <div class="hero-card" id="heroCard">
@@ -232,9 +242,10 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
   </div>
 </section>
 
-<section class="whatsapp-band">
+<section class="whatsapp-band" id="whatsappBand">
   <div class="container whatsapp-inner"><div><strong>Need help choosing?</strong><p>Message Cloud Clothing directly on WhatsApp.</p></div><a class="btn btn-gold" id="bandWhatsapp" href="#" target="_blank">Chat on WhatsApp</a></div>
 </section>
+</div>
 </main>
 
 <footer class="footer">
@@ -255,6 +266,7 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
     <button class="side-link" data-page="products">▣ <span>Products</span></button>
     <button class="side-link" data-page="categories">◫ <span>Categories</span></button>
     <button class="side-link" data-page="collections">◩ <span>Collections</span></button>
+    <button class="side-link" data-page="sections">☷ <span>Sections</span></button>
     <button class="side-link" data-page="orders">◉ <span>Orders / WhatsApp</span></button>
     <button class="side-link" data-page="hero">▤ <span>Hero Banner</span></button>
     <button class="side-link" data-page="colors">◐ <span>Colors</span></button>
@@ -266,7 +278,13 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
   </aside>
   <section class="admin-main">
     <div class="admin-top"><div style="display:flex;align-items:center;gap:10px"><button class="icon-btn mobile-admin-toggle" id="adminMenuBtn">☰</button><div><h1 id="adminPageTitle">Dashboard</h1><div class="admin-note" id="adminDataMode">Connecting to cloud…</div></div></div><button class="btn btn-primary" onclick="openProductFormGuard()">+ Add Product</button></div>
-    <div id="adminContent"></div>
+    <div class="admin-workspace">
+      <div id="adminContent"></div>
+      <aside class="admin-preview-panel" id="adminPreviewPanel">
+        <div class="admin-preview-head"><div><strong>Live Mini Preview</strong><span>Updates after each save</span></div><span class="preview-live-dot">●</span></div>
+        <div id="adminLivePreview"></div>
+      </aside>
+    </div>
   </section>
 </div>
 
@@ -315,11 +333,11 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
 
 <div class="modal-backdrop" id="detailModal"><div class="modal large"><div class="modal-head"><h3 style="font-family:'DM Sans'">Product Details</h3><button class="icon-btn" onclick="closeModal('detailModal')">×</button></div><div class="modal-body" id="detailBody"></div></div></div>
 
-<div class="modal-backdrop" id="categoryModal"><div class="modal"><div class="modal-head"><h3 style="font-family:'DM Sans'" id="categoryModalTitle">Category</h3><button class="icon-btn" onclick="closeModal('categoryModal')">×</button></div><div class="modal-body"><form id="categoryForm"><input type="hidden" id="categoryId"><div class="field"><label>Name</label><input id="categoryName" required></div><div class="field" style="margin-top:12px"><label>Visible</label><select id="categoryVisible"><option value="true">Visible</option><option value="false">Hidden</option></select></div><div class="admin-actions"><button type="button" class="btn btn-outline" onclick="closeModal('categoryModal')">Cancel</button><button class="btn btn-primary">Save Category</button></div></form></div></div></div>
+<div class="modal-backdrop" id="categoryModal"><div class="modal"><div class="modal-head"><h3 style="font-family:'DM Sans'" id="categoryModalTitle">Category</h3><button class="icon-btn" onclick="closeModal('categoryModal')">×</button></div><div class="modal-body"><form id="categoryForm"><input type="hidden" id="categoryId"><div class="field"><label>Name</label><input id="categoryName" required></div><div class="field" style="margin-top:12px"><label>Category Image</label><div class="upload-box"><input id="categoryImage" type="file" accept="image/jpeg,image/png,image/webp"><div class="muted" style="font-size:11px">Upload a JPG, PNG or WEBP image. This becomes the category circle on the storefront.</div><img id="categoryImagePreview" class="design-image-preview" alt="Category preview"></div></div><div class="field" style="margin-top:12px"><label>Visible</label><select id="categoryVisible"><option value="true">Visible</option><option value="false">Hidden</option></select></div><div class="admin-actions"><button type="button" class="btn btn-outline" onclick="closeModal('categoryModal')">Cancel</button><button class="btn btn-primary" id="categorySaveBtn">Save Category</button></div></form></div></div></div>
 
-<div class="modal-backdrop" id="collectionModal"><div class="modal"><div class="modal-head"><h3 style="font-family:'DM Sans'" id="collectionModalTitle">Collection</h3><button class="icon-btn" onclick="closeModal('collectionModal')">×</button></div><div class="modal-body"><form id="collectionForm"><input type="hidden" id="collectionId"><div class="field"><label>Name</label><input id="collectionName" required></div><div class="field" style="margin-top:12px"><label>Visible</label><select id="collectionVisible"><option value="true">Visible</option><option value="false">Hidden</option></select></div><div class="admin-actions"><button type="button" class="btn btn-outline" onclick="closeModal('collectionModal')">Cancel</button><button class="btn btn-primary">Save Collection</button></div></form></div></div></div>
+<div class="modal-backdrop" id="collectionModal"><div class="modal"><div class="modal-head"><h3 style="font-family:'DM Sans'" id="collectionModalTitle">Collection</h3><button class="icon-btn" onclick="closeModal('collectionModal')">×</button></div><div class="modal-body"><form id="collectionForm"><input type="hidden" id="collectionId"><div class="field"><label>Name</label><input id="collectionName" required></div><div class="field" style="margin-top:12px"><label>Collection Image</label><div class="upload-box"><input id="collectionImage" type="file" accept="image/jpeg,image/png,image/webp"><div class="muted" style="font-size:11px">Upload a JPG, PNG or WEBP image for the collection card.</div><img id="collectionImagePreview" class="design-image-preview" alt="Collection preview"></div></div><div class="field" style="margin-top:12px"><label>Visible</label><select id="collectionVisible"><option value="true">Visible</option><option value="false">Hidden</option></select></div><div class="admin-actions"><button type="button" class="btn btn-outline" onclick="closeModal('collectionModal')">Cancel</button><button class="btn btn-primary" id="collectionSaveBtn">Save Collection</button></div></form></div></div></div>
 
-<div class="modal-backdrop" id="moderatorModal"><div class="modal"><div class="modal-head"><h3 style="font-family:'DM Sans'">Moderator</h3><button class="icon-btn" onclick="closeModal('moderatorModal')">×</button></div><div class="modal-body"><form id="moderatorForm"><input type="hidden" id="moderatorId"><div class="form-grid"><div class="field"><label>Username</label><input id="mUser" required></div><div class="field"><label>Display Name</label><input id="mName" required></div><div class="field"><label>Password</label><input id="mPass" required></div><div class="field full"><label>Permissions</label><div class="checks"><label class="check"><input type="checkbox" id="permProducts"> Products</label><label class="check"><input type="checkbox" id="permCategories"> Categories</label><label class="check"><input type="checkbox" id="permCollections"> Collections</label><label class="check"><input type="checkbox" id="permHero"> Hero</label><label class="check"><input type="checkbox" id="permSettings"> Settings</label></div></div><div class="field full"><label>Enabled</label><select id="mEnabled"><option value="true">Enabled</option><option value="false">Disabled</option></select></div></div><div class="admin-actions"><button type="button" class="btn btn-outline" onclick="closeModal('moderatorModal')">Cancel</button><button class="btn btn-primary">Save Moderator</button></div></form></div></div></div>
+<div class="modal-backdrop" id="moderatorModal"><div class="modal"><div class="modal-head"><h3 style="font-family:'DM Sans'">Moderator</h3><button class="icon-btn" onclick="closeModal('moderatorModal')">×</button></div><div class="modal-body"><form id="moderatorForm"><input type="hidden" id="moderatorId"><div class="form-grid"><div class="field"><label>Username</label><input id="mUser" required></div><div class="field"><label>Display Name</label><input id="mName" required></div><div class="field"><label>Password</label><input id="mPass" required></div><div class="field full"><label>Permissions</label><div class="checks"><label class="check"><input type="checkbox" id="permProducts"> Products</label><label class="check"><input type="checkbox" id="permCategories"> Categories</label><label class="check"><input type="checkbox" id="permCollections"> Collections</label><label class="check"><input type="checkbox" id="permSections"> Sections</label><label class="check"><input type="checkbox" id="permHero"> Hero</label><label class="check"><input type="checkbox" id="permSettings"> Settings</label></div></div><div class="field full"><label>Enabled</label><select id="mEnabled"><option value="true">Enabled</option><option value="false">Disabled</option></select></div></div><div class="admin-actions"><button type="button" class="btn btn-outline" onclick="closeModal('moderatorModal')">Cancel</button><button class="btn btn-primary">Save Moderator</button></div></form></div></div></div>
 
 <div class="drawer" id="cartDrawer">
   <div class="drawer-head"><h3 style="font-family:'DM Sans'">Your cart</h3><button class="icon-btn" onclick="closeCart()">×</button></div>
@@ -375,17 +393,17 @@ const DEFAULT_DATA = {
     {id:"p4",name:"Cloud Essential Tee",category:"T-Shirts / Genji",collection:"New Arrival",price:29,oldPrice:0,stock:24,description:"A versatile premium tee made for easy layering and daily comfort.",image:FALLBACK_IMG,images:[],featured:false,isNew:true,sale:false,visible:true,createdAt:Date.now()}
   ],
   categories:[
-    {id:"c1",name:"Shirts",visible:true,order:1},
-    {id:"c2",name:"Pants",visible:true,order:2},
-    {id:"c3",name:"Watches",visible:true,order:3},
-    {id:"c4",name:"T-Shirts / Genji",visible:true,order:4}
+    {id:"c1",name:"Shirts",visible:true,order:1,image:FALLBACK_IMG},
+    {id:"c2",name:"Pants",visible:true,order:2,image:FALLBACK_IMG},
+    {id:"c3",name:"Watches",visible:true,order:3,image:FALLBACK_IMG},
+    {id:"c4",name:"T-Shirts / Genji",visible:true,order:4,image:FALLBACK_IMG}
   ],
   collections:[
-    {id:"co1",name:"New Arrival",visible:true,order:1},
-    {id:"co2",name:"Premium Collection",visible:true,order:2},
-    {id:"co3",name:"Summer Collection",visible:true,order:3},
-    {id:"co4",name:"Best Sellers",visible:true,order:4},
-    {id:"co5",name:"Limited Edition",visible:true,order:5}
+    {id:"co1",name:"New Arrival",visible:true,order:1,image:FALLBACK_IMG},
+    {id:"co2",name:"Premium Collection",visible:true,order:2,image:FALLBACK_IMG},
+    {id:"co3",name:"Summer Collection",visible:true,order:3,image:FALLBACK_IMG},
+    {id:"co4",name:"Best Sellers",visible:true,order:4,image:FALLBACK_IMG},
+    {id:"co5",name:"Limited Edition",visible:true,order:5,image:FALLBACK_IMG}
   ],
   cart:[],
   theme:{...DEFAULT_THEME},
@@ -397,7 +415,16 @@ const DEFAULT_DATA = {
   settings:{
     storeName:"Cloud Clothing",tagline:"Wear the cloud, order in a tap.",
     whatsapp:"",facebook:"",instagram:"",tiktok:"",currency:"USD",
-    ownerUsername:"ajijul1",ownerPassword:"@Ajijul1#"
+    ownerUsername:"ajijul1",ownerPassword:"@Ajijul1#",
+    sections:[
+      {id:"home",label:"Hero Banner",visible:true,order:1},
+      {id:"categories",label:"Categories",visible:true,order:2},
+      {id:"featuredSection",label:"Featured Products",visible:true,order:3},
+      {id:"collections",label:"Collections",visible:true,order:4},
+      {id:"shop",label:"All Products",visible:true,order:5},
+      {id:"story",label:"Brand Story",visible:true,order:6},
+      {id:"whatsappBand",label:"WhatsApp CTA",visible:true,order:7}
+    ]
   },
   moderators:[]
 };
@@ -437,7 +464,13 @@ function migrate(raw){
     visible:p.visible !== false,createdAt:p.createdAt||Date.now()
   })) : [];
   d.categories = Array.isArray(d.categories)?d.categories:deepClone(DEFAULT_DATA.categories);
+  d.categories = d.categories.map((c,i)=>({...c,image:c.image||FALLBACK_IMG,order:Number(c.order)||i+1,visible:c.visible!==false}));
   d.collections = Array.isArray(d.collections)?d.collections:deepClone(DEFAULT_DATA.collections);
+  d.collections = d.collections.map((c,i)=>({...c,image:c.image||FALLBACK_IMG,order:Number(c.order)||i+1,visible:c.visible!==false}));
+  d.settings = mergeObject(DEFAULT_DATA.settings,d.settings);
+  d.settings.sections = Array.isArray(d.settings.sections)?d.settings.sections:deepClone(DEFAULT_DATA.settings.sections);
+  d.settings.sections = d.settings.sections.map((x,i)=>({...x,order:Number(x.order)||i+1,visible:x.visible!==false}));
+  d.settings.sections.sort((a,b)=>a.order-b.order).forEach((x,i)=>x.order=i+1);
   d.cart = Array.isArray(d.cart)?d.cart:[];
   d.moderators = Array.isArray(d.moderators)?d.moderators:[];
   return d;
@@ -515,6 +548,7 @@ function renderStore(){
   const hw=whatsappHrefSafe();
   $("heroWhatsapp").href=hw;$("headerWhatsapp").href=hw;$("bandWhatsapp").href=hw;
   renderCategories();renderCollections();populateFilters();renderProducts();renderFeatured();renderCart();
+  renderStoreSections();
   renderSocials();$("year").textContent=new Date().getFullYear();
 }
 function whatsappHrefSafe(){
@@ -529,15 +563,21 @@ function renderCategories(){
   const cats=data.categories.filter(c=>c.visible).sort((a,b)=>a.order-b.order);
   $("categoryGrid").innerHTML=cats.length?cats.map(c=>{
     const count=visibleProducts().filter(p=>p.category===c.name).length;
-    return `<div class="category-card" onclick="filterCategory('${escapeAttr(c.name)}')"><h3>${escapeHtml(c.name)}</h3><span>${count} product${count===1?"":"s"}</span></div>`;
+    return `<div class="category-card category-circle-card" onclick="filterCategory('${escapeAttr(c.name)}')"><div class="category-image"><img src="${escapeAttr(c.image||FALLBACK_IMG)}" alt="${escapeAttr(c.name)}" loading="lazy"></div><h3>${escapeHtml(c.name)}</h3><span>${count} product${count===1?"":"s"}</span></div>`;
   }).join(""):`<div class="empty" style="grid-column:1/-1"><strong>No categories yet</strong></div>`;
 }
 function renderCollections(){
   const cols=data.collections.filter(c=>c.visible).sort((a,b)=>a.order-b.order);
   $("collectionGrid").innerHTML=cols.slice(0,6).map(c=>{
     const count=visibleProducts().filter(p=>p.collection===c.name).length;
-    return `<div class="collection-card" onclick="filterCollection('${escapeAttr(c.name)}')"><div class="eyebrow">Collection</div><h3>${escapeHtml(c.name)}</h3><span class="muted">${count} piece${count===1?"":"s"} to explore</span></div>`;
+    return `<div class="collection-card" style="background-image:linear-gradient(180deg,rgba(35,28,21,.05),rgba(35,28,21,.72)),url('${escapeAttr(c.image||FALLBACK_IMG)}')" onclick="filterCollection('${escapeAttr(c.name)}')"><div class="eyebrow" style="color:#f4d99f">Collection</div><h3 style="color:#fff">${escapeHtml(c.name)}</h3><span style="color:rgba(255,255,255,.8)">${count} piece${count===1?"":"s"} to explore</span></div>`;
   }).join("");
+}
+function renderStoreSections(){
+  const wrap=$("storefrontSections");if(!wrap)return;
+  const sections=(data.settings.sections||deepClone(DEFAULT_DATA.settings.sections)).slice().sort((a,b)=>a.order-b.order);
+  sections.forEach(x=>{const el=$(x.id);if(el)el.style.display=x.visible===false?"none":"";});
+  sections.forEach(x=>{const el=$(x.id);if(el)wrap.appendChild(el);});
 }
 function productCard(p){
   const badges=(p.isNew?'<span class="badge">New</span>':"")+(p.sale?'<span class="badge sale">Sale</span>':"");
@@ -751,6 +791,29 @@ async function upsertCloudProduct(p){
   return normalizeCloudProduct(rows[0],p);
 }
 
+async function uploadDesignImage(file,folder){
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+  const path=folder+'/'+Date.now()+'_'+Math.random().toString(36).slice(2,9)+'.'+ext;
+  const res=await fetch(SUPABASE_URL+'/storage/v1/object/hero-images/'+encodeURIComponent(path),{
+    method:'POST',headers:{apikey:SUPABASE_PUBLISHABLE_KEY,'x-upsert':'false','Content-Type':file.type||'image/jpeg'},body:file
+  });
+  if(!res.ok){const t=await res.text();throw new Error('Design image upload failed: '+t);}
+  return SUPABASE_URL+'/storage/v1/object/public/hero-images/'+path;
+}
+function normalizeDesignState(){
+  data.categories=(data.categories||[]).map((c,i)=>({...c,image:c.image||FALLBACK_IMG,order:i+1}));
+  data.collections=(data.collections||[]).map((c,i)=>({...c,image:c.image||FALLBACK_IMG,order:i+1}));
+  data.settings.sections=(data.settings.sections||deepClone(DEFAULT_DATA.settings.sections)).map((x,i)=>({...x,order:i+1,visible:x.visible!==false}));
+}
+async function saveDesignState(reason='design save'){
+  normalizeDesignState();
+  persist(reason);
+  const ok=await saveSiteSettings(reason);
+  renderAll();
+  renderAdminPage();
+  return ok;
+}
+
 async function fetchSiteSettings(){
   const {data:row,error}=await supabaseClient.from("site_settings").select("id,hero,theme,settings,updated_at").eq("id",1).maybeSingle();
   if(error) throw error;
@@ -758,7 +821,10 @@ async function fetchSiteSettings(){
 }
 async function saveSiteSettings(reason="site settings save"){
   if(!supabaseReady) return false;
-  const payload={id:1,hero:deepClone(data.hero),theme:deepClone(data.theme),settings:deepClone(data.settings),updated_at:new Date().toISOString()};
+  normalizeDesignState();
+  const cloudSettings=deepClone(data.settings);
+  cloudSettings.design={categories:deepClone(data.categories),collections:deepClone(data.collections),sections:deepClone(data.settings.sections)};
+  const payload={id:1,hero:deepClone(data.hero),theme:deepClone(data.theme),settings:cloudSettings,updated_at:new Date().toISOString()};
   const {error}=await supabaseClient.from("site_settings").upsert(payload,{onConflict:"id"});
   if(error){console.error("Site settings save failed:",reason,error);return false;}
   return true;
@@ -771,7 +837,17 @@ async function syncSiteSettingsFromSupabase(){
     data.hero=mergeObject(DEFAULT_DATA.hero,remote.hero);
     data.theme=mergeObject(DEFAULT_THEME,remote.theme);
     data.settings=mergeObject(DEFAULT_DATA.settings,remote.settings);
+    const design=remote.settings?.design||{};
+    if(Array.isArray(design.categories))data.categories=design.categories;
+    if(Array.isArray(design.collections))data.collections=design.collections;
+    if(Array.isArray(design.sections))data.settings.sections=design.sections;
+    data.categories=(data.categories||[]).map((c,i)=>({...c,image:c.image||FALLBACK_IMG,order:Number(c.order)||i+1}));
+    data.collections=(data.collections||[]).map((c,i)=>({...c,image:c.image||FALLBACK_IMG,order:Number(c.order)||i+1}));
+    data.settings.sections=(data.settings.sections||deepClone(DEFAULT_DATA.settings.sections)).map((x,i)=>({...x,order:Number(x.order)||i+1,visible:x.visible!==false}));
     persist("cloud site settings load");
+    if(!design.categories || !design.collections || !design.sections){
+      await saveSiteSettings("design migration");
+    }
   }else{
     await saveSiteSettings("initial site settings migration");
   }
@@ -898,12 +974,31 @@ async function duplicateProduct(id){
 
 function renderAll(){applyTheme();renderStore();if($("adminApp").classList.contains("active"))renderAdminPage();}
 
+function renderAdminPreview(){
+  const box=$("adminLivePreview");if(!box)return;
+  const cats=(data.categories||[]).filter(c=>c.visible).sort((a,b)=>a.order-b.order).slice(0,5);
+  const cols=(data.collections||[]).filter(c=>c.visible).sort((a,b)=>a.order-b.order).slice(0,3);
+  const secs=(data.settings.sections||[]).filter(s=>s.visible!==false).slice().sort((a,b)=>a.order-b.order);
+  const has=id=>secs.some(s=>s.id===id);
+  box.innerHTML=`<div class="preview-phone">
+    <div class="preview-phone-head"><span class="preview-phone-logo">${escapeHtml(data.settings.storeName)}</span><span>🛒</span></div>
+    ${has('home')?`<div class="preview-hero-mini" style="background-image:url('${escapeAttr(data.hero.image||FALLBACK_IMG)}')"><div><div style="font-size:8px;color:#ead09b">${escapeHtml(data.settings.storeName.toUpperCase())}</div><strong style="font-family:'Playfair Display';font-size:15px;line-height:1.1;display:block;margin-top:5px">${escapeHtml(data.hero.title.replace(/<br>/g,' '))}</strong></div></div>`:''}
+    ${has('categories')?`<div class="preview-mini-section"><div class="preview-mini-title">Shop by category</div><div class="preview-cat-row">${cats.map(c=>`<div class="preview-cat-item"><img src="${escapeAttr(c.image||FALLBACK_IMG)}"><span>${escapeHtml(c.name)}</span></div>`).join('')}</div></div>`:''}
+    ${has('featuredSection')?`<div class="preview-mini-section"><div class="preview-mini-title">Featured products</div><div class="preview-mini-grid"><div class="preview-mini-card" style="background-image:url('${escapeAttr(productImage(data.products.find(p=>p.featured)||data.products[0]||{}))}')"></div><div class="preview-mini-card" style="background-image:url('${escapeAttr(productImage(data.products.filter(p=>p.featured)[1]||data.products[1]||{}))}')"></div></div></div>`:''}
+    ${has('collections')?`<div class="preview-mini-section"><div class="preview-mini-title">Collections</div><div class="preview-mini-grid">${cols.map(c=>`<div class="preview-mini-card" style="background-image:url('${escapeAttr(c.image||FALLBACK_IMG)}')"></div>`).join('')}</div></div>`:''}
+    ${has('shop')?`<div class="preview-mini-section"><div class="preview-mini-title">All products</div><div class="preview-mini-grid"><div class="preview-mini-card"></div><div class="preview-mini-card"></div></div></div>`:''}
+    ${has('story')?`<div class="preview-mini-section"><div class="preview-mini-title">Our story</div><div style="font-size:9px;color:var(--muted)">Quiet luxury for everyday life.</div></div>`:''}
+    ${has('whatsappBand')?`<div class="preview-mini-section" style="background:#1d2d22;color:#fff"><div class="preview-mini-title" style="color:#fff">Need help choosing?</div><div style="font-size:8px;color:#c9d4cb">Message Cloud Clothing on WhatsApp.</div></div>`:''}
+  </div>`;
+}
+
 function renderAdminPage(){
-  const titleMap={dashboard:"Dashboard",products:"Products",categories:"Categories",collections:"Collections",orders:"Orders / WhatsApp Info",hero:"Hero Banner",colors:"Color Studio",moderators:"Moderators",settings:"Settings",backup:"Backup"};
+  const titleMap={dashboard:"Dashboard",products:"Products",categories:"Categories",collections:"Collections",sections:"Sections",orders:"Orders / WhatsApp Info",hero:"Hero Banner",colors:"Color Studio",moderators:"Moderators",settings:"Settings",backup:"Backup"};
   $("adminPageTitle").textContent=titleMap[currentPage]||"Dashboard";
   document.querySelectorAll(".side-link[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===currentPage));
-  const fn={dashboard:renderDashboard,products:renderAdminProducts,categories:renderAdminCategories,collections:renderAdminCollections,orders:renderOrders,hero:renderAdminHero,colors:renderColors,moderators:renderModerators,settings:renderSettings,backup:renderBackup}[currentPage];
+  const fn={dashboard:renderDashboard,products:renderAdminProducts,categories:renderAdminCategories,collections:renderAdminCollections,sections:renderAdminSections,orders:renderOrders,hero:renderAdminHero,colors:renderColors,moderators:renderModerators,settings:renderSettings,backup:renderBackup}[currentPage];
   if(fn)fn();
+  renderAdminPreview();
 }
 function renderDashboard(){
   const stock=data.products.reduce((s,p)=>s+p.stock,0),low=data.products.filter(p=>p.stock>0&&p.stock<=5).length,featured=data.products.filter(p=>p.featured).length;
@@ -925,42 +1020,81 @@ function renderAdminProducts(){
 }
 
 function renderAdminCategories(){
+  const rows=data.categories.slice().sort((a,b)=>a.order-b.order);
   $("adminContent").innerHTML=`<div class="admin-panel"><div class="panel-head"><h3>Categories</h3><button class="btn btn-primary" onclick="openCategoryForm()">+ Add Category</button></div>
-  <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Order</th><th>Name</th><th>Products</th><th>Status</th><th>Actions</th></tr></thead><tbody>${data.categories.sort((a,b)=>a.order-b.order).map((c,i)=>`<tr><td>${i+1}</td><td><strong>${escapeHtml(c.name)}</strong></td><td>${data.products.filter(p=>p.category===c.name).length}</td><td><span class="status ${c.visible?"":"off"}">${c.visible?"Visible":"Hidden"}</span></td><td><button class="btn btn-outline" onclick="openCategoryForm('${escapeAttr(c.id)}')">Edit</button> <button class="btn btn-danger" onclick="deleteCategory('${escapeAttr(c.id)}')">Delete</button></td></tr>`).join("")}</tbody></table></div></div>`;
+  <p class="muted" style="margin-bottom:12px">Each category can have its own image. The image appears as a small round category on the storefront.</p>
+  <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Order</th><th>Image</th><th>Name</th><th>Products</th><th>Status</th><th>Actions</th></tr></thead><tbody>${rows.map((c,i)=>`<tr><td>${i+1}</td><td><img class="table-img" style="border-radius:50%" src="${escapeAttr(c.image||FALLBACK_IMG)}"></td><td><strong>${escapeHtml(c.name)}</strong></td><td>${data.products.filter(p=>p.category===c.name).length}</td><td><span class="status ${c.visible?"":"off"}">${c.visible?"Visible":"Hidden"}</span></td><td><button class="btn btn-outline" onclick="openCategoryForm('${escapeAttr(c.id)}')">Edit</button> <button class="btn btn-danger" onclick="deleteCategory('${escapeAttr(c.id)}')">Delete</button></td></tr>`).join("")||`<tr><td colspan="6"><div class="empty"><strong>No categories yet</strong></div></td></tr>`}</tbody></table></div></div>`;
 }
 function openCategoryForm(id=null){
-  $("categoryForm").reset();$("categoryId").value=id||"";$("categoryModalTitle").textContent=id?"Edit Category":"Add Category";
-  if(id){const c=data.categories.find(x=>x.id===id);$("categoryName").value=c.name;$("categoryVisible").value=String(c.visible);}
+  $("categoryForm").reset();$("categoryId").value=id||"";$('categoryImagePreview').src=FALLBACK_IMG;$('categoryModalTitle').textContent=id?"Edit Category":"Add Category";
+  if(id){const c=data.categories.find(x=>x.id===id);if(c){$("categoryName").value=c.name;$("categoryVisible").value=String(c.visible);$('categoryImagePreview').src=c.image||FALLBACK_IMG;}}
+  $("categoryImage").onchange=async e=>{if(e.target.files[0])$('categoryImagePreview').src=await compressImage(e.target.files[0],500,.82)};
   $("categoryModal").classList.add("open");
 }
-$("categoryForm").addEventListener("submit",e=>{
-  e.preventDefault();const id=$("categoryId").value,name=$("categoryName").value.trim();if(!name)return;
-  if(id){const c=data.categories.find(x=>x.id===id);const old=c.name;c.name=name;c.visible=$("categoryVisible").value==="true";data.products.forEach(p=>{if(p.category===old)p.category=name;});}
-  else data.categories.push({id:uid("c"),name,visible:$("categoryVisible").value==="true",order:data.categories.length+1});
-  if(persist("category save")){renderAll();renderAdminPage();closeModal("categoryModal");showToast("Category saved successfully");}else showToast("Could not save category.","bad");
+$("categoryForm").addEventListener("submit",async e=>{
+  e.preventDefault();const btn=$("categorySaveBtn");btn.disabled=true;btn.textContent="Saving…";
+  try{
+    if(!can("categories")){showToast("Your account does not have Categories permission.","bad");return;}
+    const id=$("categoryId").value,name=$("categoryName").value.trim();if(!name)return;
+    const existing=id?data.categories.find(x=>x.id===id):null;
+    let image=existing?.image||FALLBACK_IMG;
+    if($("categoryImage").files[0]) image=supabaseReady?await uploadDesignImage($("categoryImage").files[0],"categories"):await compressImage($("categoryImage").files[0],700,.82);
+    if(id){const c=data.categories.find(x=>x.id===id);const old=c.name;c.name=name;c.visible=$("categoryVisible").value==="true";c.image=image;data.products.forEach(p=>{if(p.category===old)p.category=name;});}
+    else data.categories.push({id:uid("c"),name,visible:$("categoryVisible").value==="true",order:data.categories.length+1,image});
+    const cloudSaved=await saveDesignState("category save");
+    closeModal("categoryModal");showToast(cloudSaved?"Category saved successfully":"Category saved locally, but cloud save failed.",cloudSaved?"good":"bad");
+  }catch(err){console.error(err);showToast("Category save failed: "+(err?.message||err),"bad");}finally{btn.disabled=false;btn.textContent="Save Category";}
 });
-function deleteCategory(id){
+async function deleteCategory(id){
   const c=data.categories.find(x=>x.id===id);if(!c)return;if(!confirm(`Delete category "${c.name}"? Products will keep their category text.`))return;
-  data.categories=data.categories.filter(x=>x.id!==id);if(persist("category delete")){renderAll();renderAdminPage();showToast("Category deleted successfully");}
+  data.categories=data.categories.filter(x=>x.id!==id);const cloudSaved=await saveDesignState("category delete");showToast(cloudSaved?"Category deleted successfully":"Category deleted locally, but cloud save failed.",cloudSaved?"good":"bad");
 }
 function renderAdminCollections(){
+  const rows=data.collections.slice().sort((a,b)=>a.order-b.order);
   $("adminContent").innerHTML=`<div class="admin-panel"><div class="panel-head"><h3>Collections</h3><button class="btn btn-primary" onclick="openCollectionForm()">+ Add Collection</button></div>
-  <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Order</th><th>Name</th><th>Products</th><th>Status</th><th>Actions</th></tr></thead><tbody>${data.collections.sort((a,b)=>a.order-b.order).map((c,i)=>`<tr><td>${i+1}</td><td><strong>${escapeHtml(c.name)}</strong></td><td>${data.products.filter(p=>p.collection===c.name).length}</td><td><span class="status ${c.visible?"":"off"}">${c.visible?"Visible":"Hidden"}</span></td><td><button class="btn btn-outline" onclick="openCollectionForm('${escapeAttr(c.id)}')">Edit</button> <button class="btn btn-danger" onclick="deleteCollection('${escapeAttr(c.id)}')">Delete</button></td></tr>`).join("")}</tbody></table></div></div>`;
+  <p class="muted" style="margin-bottom:12px">Collections also support their own images for the storefront cards.</p>
+  <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Order</th><th>Image</th><th>Name</th><th>Products</th><th>Status</th><th>Actions</th></tr></thead><tbody>${rows.map((c,i)=>`<tr><td>${i+1}</td><td><img class="table-img" src="${escapeAttr(c.image||FALLBACK_IMG)}"></td><td><strong>${escapeHtml(c.name)}</strong></td><td>${data.products.filter(p=>p.collection===c.name).length}</td><td><span class="status ${c.visible?"":"off"}">${c.visible?"Visible":"Hidden"}</span></td><td><button class="btn btn-outline" onclick="openCollectionForm('${escapeAttr(c.id)}')">Edit</button> <button class="btn btn-danger" onclick="deleteCollection('${escapeAttr(c.id)}')">Delete</button></td></tr>`).join("")||`<tr><td colspan="6"><div class="empty"><strong>No collections yet</strong></div></td></tr>`}</tbody></table></div></div>`;
 }
 function openCollectionForm(id=null){
-  $("collectionForm").reset();$("collectionId").value=id||"";$("collectionModalTitle").textContent=id?"Edit Collection":"Add Collection";
-  if(id){const c=data.collections.find(x=>x.id===id);$("collectionName").value=c.name;$("collectionVisible").value=String(c.visible);}
+  $("collectionForm").reset();$("collectionId").value=id||"";$('collectionImagePreview').src=FALLBACK_IMG;$('collectionModalTitle').textContent=id?"Edit Collection":"Add Collection";
+  if(id){const c=data.collections.find(x=>x.id===id);if(c){$("collectionName").value=c.name;$("collectionVisible").value=String(c.visible);$('collectionImagePreview').src=c.image||FALLBACK_IMG;}}
+  $("collectionImage").onchange=async e=>{if(e.target.files[0])$('collectionImagePreview').src=await compressImage(e.target.files[0],700,.82)};
   $("collectionModal").classList.add("open");
 }
-$("collectionForm").addEventListener("submit",e=>{
-  e.preventDefault();const id=$("collectionId").value,name=$("collectionName").value.trim();if(!name)return;
-  if(id){const c=data.collections.find(x=>x.id===id);const old=c.name;c.name=name;c.visible=$("collectionVisible").value==="true";data.products.forEach(p=>{if(p.collection===old)p.collection=name;});}
-  else data.collections.push({id:uid("co"),name,visible:$("collectionVisible").value==="true",order:data.collections.length+1});
-  if(persist("collection save")){renderAll();renderAdminPage();closeModal("collectionModal");showToast("Collection saved successfully");}else showToast("Could not save collection.","bad");
+$("collectionForm").addEventListener("submit",async e=>{
+  e.preventDefault();const btn=$("collectionSaveBtn");btn.disabled=true;btn.textContent="Saving…";
+  try{
+    if(!can("collections")){showToast("Your account does not have Collections permission.","bad");return;}
+    const id=$("collectionId").value,name=$("collectionName").value.trim();if(!name)return;
+    const existing=id?data.collections.find(x=>x.id===id):null;
+    let image=existing?.image||FALLBACK_IMG;
+    if($("collectionImage").files[0]) image=supabaseReady?await uploadDesignImage($("collectionImage").files[0],"collections"):await compressImage($("collectionImage").files[0],900,.82);
+    if(id){const c=data.collections.find(x=>x.id===id);const old=c.name;c.name=name;c.visible=$("collectionVisible").value==="true";c.image=image;data.products.forEach(p=>{if(p.collection===old)p.collection=name;});}
+    else data.collections.push({id:uid("co"),name,visible:$("collectionVisible").value==="true",order:data.collections.length+1,image});
+    const cloudSaved=await saveDesignState("collection save");
+    closeModal("collectionModal");showToast(cloudSaved?"Collection saved successfully":"Collection saved locally, but cloud save failed.",cloudSaved?"good":"bad");
+  }catch(err){console.error(err);showToast("Collection save failed: "+(err?.message||err),"bad");}finally{btn.disabled=false;btn.textContent="Save Collection";}
 });
-function deleteCollection(id){
+async function deleteCollection(id){
   const c=data.collections.find(x=>x.id===id);if(!c)return;if(!confirm(`Delete collection "${c.name}"? Products will keep their collection text.`))return;
-  data.collections=data.collections.filter(x=>x.id!==id);if(persist("collection delete")){renderAll();renderAdminPage();showToast("Collection deleted successfully");}
+  data.collections=data.collections.filter(x=>x.id!==id);const cloudSaved=await saveDesignState("collection delete");showToast(cloudSaved?"Collection deleted successfully":"Collection deleted locally, but cloud save failed.",cloudSaved?"good":"bad");
+}
+
+function renderAdminSections(){
+  const rows=(data.settings.sections||[]).slice().sort((a,b)=>a.order-b.order);
+  $("adminContent").innerHTML=`<div class="admin-panel"><div class="panel-head"><h3>Section Manager</h3><span class="muted">Drag to reorder</span></div><p class="muted" style="margin-bottom:13px">Drag sections into the order you want. Hide any section you do not need. Changes are saved to the cloud.</p><div class="section-manager" id="sectionManager">${rows.map(x=>`<div class="section-row" draggable="true" data-section-id="${escapeAttr(x.id)}"><span class="drag-handle">☷</span><div class="section-name"><strong>${escapeHtml(x.label)}</strong><span>${escapeHtml(x.id)}</span></div><button class="btn btn-outline" onclick="toggleStoreSection('${escapeAttr(x.id)}')">${x.visible===false?"Show":"Hide"}</button></div>`).join("")}</div></div>`;
+  const box=$("sectionManager");if(!box)return;
+  let dragId=null;
+  box.querySelectorAll('.section-row').forEach(row=>{
+    row.addEventListener('dragstart',()=>{dragId=row.dataset.sectionId;row.classList.add('dragging');});
+    row.addEventListener('dragend',()=>row.classList.remove('dragging'));
+    row.addEventListener('dragover',e=>e.preventDefault());
+    row.addEventListener('drop',async e=>{e.preventDefault();if(!can("sections")){showToast("Your account does not have Sections permission.","bad");return;}const target=row.dataset.sectionId;if(!dragId||dragId===target)return;const arr=data.settings.sections.slice().sort((a,b)=>a.order-b.order);const from=arr.findIndex(x=>x.id===dragId),to=arr.findIndex(x=>x.id===target);if(from<0||to<0)return;const [m]=arr.splice(from,1);arr.splice(to,0,m);arr.forEach((x,i)=>x.order=i+1);data.settings.sections=arr;const ok=await saveDesignState('section reorder');showToast(ok?'Section order saved':'Section order saved locally, but cloud save failed.',ok?'good':'bad');});
+  });
+}
+async function toggleStoreSection(id){
+  if(!can("sections")){showToast("Your account does not have Sections permission.","bad");return;}
+  const x=(data.settings.sections||[]).find(s=>s.id===id);if(!x)return;x.visible=x.visible===false;const ok=await saveDesignState('section visibility');showToast(ok?'Section visibility saved':'Section visibility saved locally, but cloud save failed.',ok?'good':'bad');
 }
 
 function renderOrders(){
@@ -1035,7 +1169,7 @@ function openModeratorForm(id=null){
   $("moderatorModal").classList.add("open");
 }
 $("moderatorForm").addEventListener("submit",e=>{
-  e.preventDefault();const id=$("moderatorId").value;const m={id:id||uid("m"),username:$("mUser").value.trim(),displayName:$("mName").value.trim(),password:$("mPass").value,enabled:$("mEnabled").value==="true",permissions:{products:$("permProducts").checked,categories:$("permCategories").checked,collections:$("permCollections").checked,hero:$("permHero").checked,settings:$("permSettings").checked}};
+  e.preventDefault();const id=$("moderatorId").value;const m={id:id||uid("m"),username:$("mUser").value.trim(),displayName:$("mName").value.trim(),password:$("mPass").value,enabled:$("mEnabled").value==="true",permissions:{products:$("permProducts").checked,categories:$("permCategories").checked,collections:$("permCollections").checked,sections:$("permSections").checked,hero:$("permHero").checked,settings:$("permSettings").checked}};
   if(!m.username||!m.password)return showToast("Username and password are required.","bad");
   if(id){const idx=data.moderators.findIndex(x=>x.id===id);data.moderators[idx]=m;}else data.moderators.push(m);
   if(persist("moderator save")){renderAdminPage();closeModal("moderatorModal");showToast("Moderator saved successfully");}else showToast("Could not save moderator.","bad");
@@ -1112,7 +1246,7 @@ document.addEventListener("keydown",e=>{
 });
 
 document.querySelectorAll(".side-link[data-page]").forEach(b=>b.addEventListener("click",()=>{
-  const permissionMap={products:"products",categories:"categories",collections:"collections",hero:"hero",settings:"settings"};
+  const permissionMap={products:"products",categories:"categories",collections:"collections",sections:"sections",hero:"hero",settings:"settings"};
   const p=b.dataset.page;
   if(permissionMap[p]&&!can(permissionMap[p]))return showToast("Your moderator account does not have this permission.","bad");
   if(p==="moderators"&&!isOwner())return showToast("Only the owner can manage moderators.","bad");
@@ -1134,7 +1268,7 @@ document.querySelectorAll(".modal-backdrop").forEach(b=>b.addEventListener("clic
 function enforceModeratorView(){
   if(!$("adminApp").classList.contains("active"))return;
   if(isOwner())return;
-  const allowed=["dashboard","products","categories","collections","hero","settings"];
+  const allowed=["dashboard","products","categories","collections","sections","hero","settings"];
   if(!allowed.includes(currentPage))currentPage="dashboard";
 }
 
