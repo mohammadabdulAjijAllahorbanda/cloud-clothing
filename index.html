@@ -161,6 +161,7 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
 @media(max-width:800px){.admin-workspace{grid-template-columns:1fr}.admin-preview-panel{position:relative;top:auto}.navlinks{display:none}.mobile-toggle{display:grid}.nav-actions .whatsapp-nav{display:none}.product-grid{grid-template-columns:repeat(2,1fr)}.story-grid,.product-detail,.color-layout{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.collection-strip{grid-template-columns:1fr}.hero-card{min-height:540px}.admin-side{transform:translateX(-105%);transition:.25s}.admin-side.open{transform:none}.admin-main{margin-left:0;width:100%;padding:15px}.mobile-admin-toggle{display:inline-grid}.stats{grid-template-columns:repeat(2,1fr)}.admin-table-wrap{overflow:auto}.admin-table{min-width:720px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.preset-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.container{width:min(100% - 22px,1180px)}.nav{height:65px}.logo{font-size:20px}.hero{padding-top:12px}.hero-card{border-radius:18px;min-height:550px}.hero-content{padding:28px 22px}.section{padding:55px 0}.category-grid{grid-template-columns:1fr 1fr}.category-card{min-height:150px;padding:15px}.product-grid{gap:9px}.product-info{padding:11px}.product-title{font-size:14px}.product-actions .btn{font-size:10px;padding:9px 6px}.footer-grid{grid-template-columns:1fr}.footer-bottom{display:block}.footer-bottom>*{margin:5px 0}.whatsapp-inner{display:block}.whatsapp-inner .btn{margin-top:12px}.stats{grid-template-columns:1fr 1fr}.admin-top{align-items:flex-start}.color-list{grid-template-columns:1fr}.login-card{padding:22px}}
 </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -232,13 +233,6 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
       <select id="sortProducts"><option value="newest">Newest</option><option value="oldest">Oldest</option><option value="low">Price Low → High</option><option value="high">Price High → Low</option><option value="az">Name A → Z</option></select>
     </div>
     <div class="product-grid" id="productGrid"></div>
-  </div>
-</section>
-
-<section class="section story">
-  <div class="container story-grid">
-    <div class="story-copy"><div class="eyebrow">Our story</div><h2>Quiet luxury for everyday life.</h2><p>Cloud Clothing is built around the idea that great style can feel effortless. We choose clean silhouettes, wearable colors and pieces that fit naturally into your day.</p><p>From first look to final order, the experience stays simple: discover, choose and order in a tap.</p><a href="#shop" class="btn btn-primary">Discover the edit</a></div>
-    <div class="story-card"><div><div class="eyebrow">CLOUD CLOTHING</div><h3>Wear the cloud.</h3><p>Premium fashion. Simple ordering. Personal service.</p></div></div>
   </div>
 </section>
 
@@ -370,7 +364,6 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLI
 let supabaseReady = false;
 let supabaseSyncing = false;
 
-
 const FALLBACK_IMG = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1100" viewBox="0 0 900 1100">
     <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ddd0bf"/><stop offset="1" stop-color="#b39e83"/></linearGradient></defs>
@@ -422,7 +415,7 @@ const DEFAULT_DATA = {
       {id:"featuredSection",label:"Featured Products",visible:true,order:3},
       {id:"collections",label:"Collections",visible:true,order:4},
       {id:"shop",label:"All Products",visible:true,order:5},
-      {id:"story",label:"Brand Story",visible:true,order:6},
+      
       {id:"whatsappBand",label:"WhatsApp CTA",visible:true,order:7}
     ]
   },
@@ -987,7 +980,7 @@ function renderAdminPreview(){
     ${has('featuredSection')?`<div class="preview-mini-section"><div class="preview-mini-title">Featured products</div><div class="preview-mini-grid"><div class="preview-mini-card" style="background-image:url('${escapeAttr(productImage(data.products.find(p=>p.featured)||data.products[0]||{}))}')"></div><div class="preview-mini-card" style="background-image:url('${escapeAttr(productImage(data.products.filter(p=>p.featured)[1]||data.products[1]||{}))}')"></div></div></div>`:''}
     ${has('collections')?`<div class="preview-mini-section"><div class="preview-mini-title">Collections</div><div class="preview-mini-grid">${cols.map(c=>`<div class="preview-mini-card" style="background-image:url('${escapeAttr(c.image||FALLBACK_IMG)}')"></div>`).join('')}</div></div>`:''}
     ${has('shop')?`<div class="preview-mini-section"><div class="preview-mini-title">All products</div><div class="preview-mini-grid"><div class="preview-mini-card"></div><div class="preview-mini-card"></div></div></div>`:''}
-    ${has('story')?`<div class="preview-mini-section"><div class="preview-mini-title">Our story</div><div style="font-size:9px;color:var(--muted)">Quiet luxury for everyday life.</div></div>`:''}
+    ''
     ${has('whatsappBand')?`<div class="preview-mini-section" style="background:#1d2d22;color:#fff"><div class="preview-mini-title" style="color:#fff">Need help choosing?</div><div style="font-size:8px;color:#c9d4cb">Message Cloud Clothing on WhatsApp.</div></div>`:''}
   </div>`;
 }
