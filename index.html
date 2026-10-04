@@ -161,7 +161,6 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
 @media(max-width:800px){.admin-workspace{grid-template-columns:1fr}.admin-preview-panel{position:relative;top:auto}.navlinks{display:none}.mobile-toggle{display:grid}.nav-actions .whatsapp-nav{display:none}.product-grid{grid-template-columns:repeat(2,1fr)}.story-grid,.product-detail,.color-layout{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.collection-strip{grid-template-columns:1fr}.hero-card{min-height:540px}.admin-side{transform:translateX(-105%);transition:.25s}.admin-side.open{transform:none}.admin-main{margin-left:0;width:100%;padding:15px}.mobile-admin-toggle{display:inline-grid}.stats{grid-template-columns:repeat(2,1fr)}.admin-table-wrap{overflow:auto}.admin-table{min-width:720px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.preset-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.container{width:min(100% - 22px,1180px)}.nav{height:65px}.logo{font-size:20px}.hero{padding-top:12px}.hero-card{border-radius:18px;min-height:550px}.hero-content{padding:28px 22px}.section{padding:55px 0}.category-grid{grid-template-columns:1fr 1fr}.category-card{min-height:150px;padding:15px}.product-grid{gap:9px}.product-info{padding:11px}.product-title{font-size:14px}.product-actions .btn{font-size:10px;padding:9px 6px}.footer-grid{grid-template-columns:1fr}.footer-bottom{display:block}.footer-bottom>*{margin:5px 0}.whatsapp-inner{display:block}.whatsapp-inner .btn{margin-top:12px}.stats{grid-template-columns:1fr 1fr}.admin-top{align-items:flex-start}.color-list{grid-template-columns:1fr}.login-card{padding:22px}}
 </style>
-<base target="_blank">
 </head>
 <body>
 
@@ -327,9 +326,9 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
 
 <div class="modal-backdrop" id="detailModal"><div class="modal large"><div class="modal-head"><h3 style="font-family:'DM Sans'">Product Details</h3><button class="icon-btn" onclick="closeModal('detailModal')">×</button></div><div class="modal-body" id="detailBody"></div></div></div>
 
-<div class="modal-backdrop" id="categoryModal"><div class="modal"><div class="modal-head"><h3 style="font-family:'DM Sans'" id="categoryModalTitle">Category</h3><button class="icon-btn" onclick="closeModal('categoryModal')">×</button></div><div class="modal-body"><form id="categoryForm"><input type="hidden" id="categoryId"><div class="field"><label>Name</label><input id="categoryName" required></div><div class="field" style="margin-top:12px"><label>Category Image</label><div class="upload-box"><input id="categoryImage" type="file" accept="image/jpeg,image/png,image/webp"><div class="muted" style="font-size:11px">Upload a JPG, PNG or WEBP image. This becomes the category circle on the storefront.</div><img id="categoryImagePreview" class="design-image-preview" alt="Category preview"></div></div><div class="field" style="margin-top:12px"><label>Visible</label><select id="categoryVisible"><option value="true">Visible</option><option value="false">Hidden</option></select></div><div class="admin-actions"><button type="button" class="btn btn-outline" onclick="closeModal('categoryModal')">Cancel</button><button class="btn btn-primary" id="categorySaveBtn">Save Category</button></div></form></div></div></div>
+<div class="modal-backdrop" id="categoryModal"><div class="modal"><div class="modal-head"><h3 style="font-family:'DM Sans'" id="categoryModalTitle">Category</h3><button class="icon-btn" onclick="closeModal('categoryModal')">×</button></div><div class="modal-body"><form id="categoryForm"><input type="hidden" id="categoryId"><div class="field"><label>Name</label><input id="categoryName" required></div><div class="field" style="margin-top:12px"><label>Category Image</label><div class="upload-box"><input id="categoryImage" type="file" accept="image/jpeg,image/png,image/webp"><div class="muted" style="font-size:11px">Upload a JPG, PNG or WEBP image, or drag & drop it here. This becomes the category image on the storefront.</div><img id="categoryImagePreview" class="design-image-preview" alt="Category preview"></div></div><div class="field" style="margin-top:12px"><label>Visible</label><select id="categoryVisible"><option value="true">Visible</option><option value="false">Hidden</option></select></div><div class="admin-actions"><button type="button" class="btn btn-outline" onclick="closeModal('categoryModal')">Cancel</button><button class="btn btn-primary" id="categorySaveBtn">Save Category</button></div></form></div></div></div>
 
-<div class="modal-backdrop" id="collectionModal"><div class="modal"><div class="modal-head"><h3 style="font-family:'DM Sans'" id="collectionModalTitle">Collection</h3><button class="icon-btn" onclick="closeModal('collectionModal')">×</button></div><div class="modal-body"><form id="collectionForm"><input type="hidden" id="collectionId"><div class="field"><label>Name</label><input id="collectionName" required></div><div class="field" style="margin-top:12px"><label>Collection Image</label><div class="upload-box"><input id="collectionImage" type="file" accept="image/jpeg,image/png,image/webp"><div class="muted" style="font-size:11px">Upload a JPG, PNG or WEBP image for the collection card.</div><img id="collectionImagePreview" class="design-image-preview" alt="Collection preview"></div></div><div class="field" style="margin-top:12px"><label>Visible</label><select id="collectionVisible"><option value="true">Visible</option><option value="false">Hidden</option></select></div><div class="admin-actions"><button type="button" class="btn btn-outline" onclick="closeModal('collectionModal')">Cancel</button><button class="btn btn-primary" id="collectionSaveBtn">Save Collection</button></div></form></div></div></div>
+<div class="modal-backdrop" id="collectionModal"><div class="modal"><div class="modal-head"><h3 style="font-family:'DM Sans'" id="collectionModalTitle">Collection</h3><button class="icon-btn" onclick="closeModal('collectionModal')">×</button></div><div class="modal-body"><form id="collectionForm"><input type="hidden" id="collectionId"><div class="field"><label>Name</label><input id="collectionName" required></div><div class="field" style="margin-top:12px"><label>Collection Image</label><div class="upload-box"><input id="collectionImage" type="file" accept="image/jpeg,image/png,image/webp"><div class="muted" style="font-size:11px">Upload a JPG, PNG or WEBP image, or drag & drop it here for the collection card.</div><img id="collectionImagePreview" class="design-image-preview" alt="Collection preview"></div></div><div class="field" style="margin-top:12px"><label>Visible</label><select id="collectionVisible"><option value="true">Visible</option><option value="false">Hidden</option></select></div><div class="admin-actions"><button type="button" class="btn btn-outline" onclick="closeModal('collectionModal')">Cancel</button><button class="btn btn-primary" id="collectionSaveBtn">Save Collection</button></div></form></div></div></div>
 
 <div class="modal-backdrop" id="moderatorModal"><div class="modal"><div class="modal-head"><h3 style="font-family:'DM Sans'">Moderator</h3><button class="icon-btn" onclick="closeModal('moderatorModal')">×</button></div><div class="modal-body"><form id="moderatorForm"><input type="hidden" id="moderatorId"><div class="form-grid"><div class="field"><label>Username</label><input id="mUser" required></div><div class="field"><label>Display Name</label><input id="mName" required></div><div class="field"><label>Password</label><input id="mPass" required></div><div class="field full"><label>Permissions</label><div class="checks"><label class="check"><input type="checkbox" id="permProducts"> Products</label><label class="check"><input type="checkbox" id="permCategories"> Categories</label><label class="check"><input type="checkbox" id="permCollections"> Collections</label><label class="check"><input type="checkbox" id="permSections"> Sections</label><label class="check"><input type="checkbox" id="permHero"> Hero</label><label class="check"><input type="checkbox" id="permSettings"> Settings</label></div></div><div class="field full"><label>Enabled</label><select id="mEnabled"><option value="true">Enabled</option><option value="false">Disabled</option></select></div></div><div class="admin-actions"><button type="button" class="btn btn-outline" onclick="closeModal('moderatorModal')">Cancel</button><button class="btn btn-primary">Save Moderator</button></div></form></div></div></div>
 
@@ -785,13 +784,14 @@ async function upsertCloudProduct(p){
 }
 
 async function uploadDesignImage(file,folder){
+  const bucket = folder === 'categories' ? 'category-images' : 'hero-images';
   const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
   const path=folder+'/'+Date.now()+'_'+Math.random().toString(36).slice(2,9)+'.'+ext;
-  const res=await fetch(SUPABASE_URL+'/storage/v1/object/hero-images/'+encodeURIComponent(path),{
+  const res=await fetch(SUPABASE_URL+'/storage/v1/object/'+bucket+'/'+encodeURIComponent(path),{
     method:'POST',headers:{apikey:SUPABASE_PUBLISHABLE_KEY,'x-upsert':'false','Content-Type':file.type||'image/jpeg'},body:file
   });
   if(!res.ok){const t=await res.text();throw new Error('Design image upload failed: '+t);}
-  return SUPABASE_URL+'/storage/v1/object/public/hero-images/'+path;
+  return SUPABASE_URL+'/storage/v1/object/public/'+bucket+'/'+path;
 }
 function normalizeDesignState(){
   data.categories=(data.categories||[]).map((c,i)=>({...c,image:c.image||FALLBACK_IMG,order:i+1}));
@@ -1022,6 +1022,12 @@ function openCategoryForm(id=null){
   $("categoryForm").reset();$("categoryId").value=id||"";$('categoryImagePreview').src=FALLBACK_IMG;$('categoryModalTitle').textContent=id?"Edit Category":"Add Category";
   if(id){const c=data.categories.find(x=>x.id===id);if(c){$("categoryName").value=c.name;$("categoryVisible").value=String(c.visible);$('categoryImagePreview').src=c.image||FALLBACK_IMG;}}
   $("categoryImage").onchange=async e=>{if(e.target.files[0])$('categoryImagePreview').src=await compressImage(e.target.files[0],500,.82)};
+  const categoryDrop=$('categoryImage').closest('.upload-box');
+  if(categoryDrop){
+    categoryDrop.ondragover=e=>{e.preventDefault();categoryDrop.style.outline='2px dashed #9b7b45';categoryDrop.style.outlineOffset='3px'};
+    categoryDrop.ondragleave=()=>{categoryDrop.style.outline='';categoryDrop.style.outlineOffset=''};
+    categoryDrop.ondrop=async e=>{e.preventDefault();categoryDrop.style.outline='';categoryDrop.style.outlineOffset='';const f=e.dataTransfer.files?.[0];if(f&&f.type.startsWith('image/')){const dt=new DataTransfer();dt.items.add(f);$('categoryImage').files=dt.files;$('categoryImagePreview').src=await compressImage(f,500,.82)}};
+  }
   $("categoryModal").classList.add("open");
 }
 $("categoryForm").addEventListener("submit",async e=>{
@@ -1052,6 +1058,12 @@ function openCollectionForm(id=null){
   $("collectionForm").reset();$("collectionId").value=id||"";$('collectionImagePreview').src=FALLBACK_IMG;$('collectionModalTitle').textContent=id?"Edit Collection":"Add Collection";
   if(id){const c=data.collections.find(x=>x.id===id);if(c){$("collectionName").value=c.name;$("collectionVisible").value=String(c.visible);$('collectionImagePreview').src=c.image||FALLBACK_IMG;}}
   $("collectionImage").onchange=async e=>{if(e.target.files[0])$('collectionImagePreview').src=await compressImage(e.target.files[0],700,.82)};
+  const collectionDrop=$('collectionImage').closest('.upload-box');
+  if(collectionDrop){
+    collectionDrop.ondragover=e=>{e.preventDefault();collectionDrop.style.outline='2px dashed #9b7b45';collectionDrop.style.outlineOffset='3px'};
+    collectionDrop.ondragleave=()=>{collectionDrop.style.outline='';collectionDrop.style.outlineOffset=''};
+    collectionDrop.ondrop=async e=>{e.preventDefault();collectionDrop.style.outline='';collectionDrop.style.outlineOffset='';const f=e.dataTransfer.files?.[0];if(f&&f.type.startsWith('image/')){const dt=new DataTransfer();dt.items.add(f);$('collectionImage').files=dt.files;$('collectionImagePreview').src=await compressImage(f,700,.82)}};
+  }
   $("collectionModal").classList.add("open");
 }
 $("collectionForm").addEventListener("submit",async e=>{
@@ -1272,4 +1284,3 @@ async function init(){
 init();
 </script>
 </body>
-</html>
