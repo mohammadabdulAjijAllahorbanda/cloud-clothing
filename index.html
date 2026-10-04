@@ -751,6 +751,32 @@ async function upsertCloudProduct(p){
   return normalizeCloudProduct(rows[0],p);
 }
 
+async function fetchSiteSettings(){
+  const {data:row,error}=await supabaseClient.from("site_settings").select("id,hero,theme,settings,updated_at").eq("id",1).maybeSingle();
+  if(error) throw error;
+  return row;
+}
+async function saveSiteSettings(reason="site settings save"){
+  if(!supabaseReady) return false;
+  const payload={id:1,hero:deepClone(data.hero),theme:deepClone(data.theme),settings:deepClone(data.settings),updated_at:new Date().toISOString()};
+  const {error}=await supabaseClient.from("site_settings").upsert(payload,{onConflict:"id"});
+  if(error){console.error("Site settings save failed:",reason,error);return false;}
+  return true;
+}
+async function syncSiteSettingsFromSupabase(){
+  const remote=await fetchSiteSettings();
+  if(!remote) return;
+  const hasRemote=Object.keys(remote.hero||{}).length||Object.keys(remote.theme||{}).length||Object.keys(remote.settings||{}).length;
+  if(hasRemote){
+    data.hero=mergeObject(DEFAULT_DATA.hero,remote.hero);
+    data.theme=mergeObject(DEFAULT_THEME,remote.theme);
+    data.settings=mergeObject(DEFAULT_DATA.settings,remote.settings);
+    persist("cloud site settings load");
+  }else{
+    await saveSiteSettings("initial site settings migration");
+  }
+}
+
 async function initSupabaseProducts(){
   const setMode=(msg,good=false)=>{
     const a=$('adminDataMode'), b=$('dataModeStatus');
@@ -787,6 +813,7 @@ async function initSupabaseProducts(){
     }
     data.products=merged;
     persist('cloud product sync');
+    await syncSiteSettingsFromSupabase();
     renderAll();
     setMode('Cloud sync: ON',true);
     console.info('Cloud products connected:',data.products.length);
@@ -954,7 +981,11 @@ function renderAdminHero(){
   $("heroForm").addEventListener("submit",async e=>{
     e.preventDefault();let image=data.hero.image;if($("heroImageInput").files[0])image=await compressImage($("heroImageInput").files[0],1800,.82);
     data.hero={title:$("heroTitleInput").value,subtitle:$("heroSubtitleInput").value,buttonText:$("heroButtonInput").value,buttonAction:$("heroActionInput").value,overlay:Number($("heroOverlayInput").value)||0,visible:$("heroVisibleInput").value==="true",image};
-    if(persist("hero save")){renderAll();renderAdminPage();showToast("Hero saved successfully");}else showToast("Could not save hero.","bad");
+    if(persist("hero save")){
+      const cloudSaved=await saveSiteSettings("hero save");
+      renderAll();renderAdminPage();
+      showToast(cloudSaved?"Hero saved successfully":"Hero saved locally, but cloud save failed.",cloudSaved?"good":"bad");
+    }else showToast("Could not save hero.","bad");
   });
 }
 
@@ -985,7 +1016,12 @@ const PRESETS={
 function selectColor(key){selectedColorKey=key;renderColors();}
 function updateSelectedColor(v){data.theme[selectedColorKey]=v;applyTheme();$("colorPicker").value=v;$("hexInput").value=v;}
 function applyPreset(name){data.theme=deepClone(PRESETS[name]);selectedColorKey="accent";applyTheme();renderColors();}
-function saveTheme(){if(persist("theme save")){renderAll();renderAdminPage();showToast("Theme saved successfully");}else showToast("Could not save theme.","bad");}
+async function saveTheme(){
+  if(!persist("theme save")){showToast("Could not save theme.","bad");return;}
+  const cloudSaved=await saveSiteSettings("theme save");
+  renderAll();renderAdminPage();
+  showToast(cloudSaved?"Theme saved successfully":"Theme saved locally, but cloud save failed.",cloudSaved?"good":"bad");
+}
 function resetTheme(){data.theme=deepClone(DEFAULT_THEME);applyTheme();renderColors();showToast("Theme reset (save to persist)");}
 
 function renderModerators(){
@@ -1015,11 +1051,15 @@ function renderSettings(){
   <div class="field"><label>TikTok URL</label><input id="sTikTok" type="url" value="${escapeAttr(s.tiktok)}"></div><div class="field"><label>Owner Username</label><input id="sOwnerUser" value="${escapeAttr(s.ownerUsername)}" autocomplete="off"></div>
   <div class="field"><label>Owner Password</label><input id="sOwnerPass" type="password" value="${escapeAttr(s.ownerPassword)}" autocomplete="new-password"></div>
   </div><div class="admin-actions"><button class="btn btn-primary">Save Settings</button></div></form></div>
-  <div class="admin-panel"><h3 style="font-family:'DM Sans';font-size:16px">Local mode note</h3><p class="muted">This website stores products, uploaded images, cart, theme, hero settings and login data in this browser's localStorage. It is not enterprise-level authentication and it does not provide server-side security.</p></div>`;
-  $("settingsForm").addEventListener("submit",e=>{
+  <div class="admin-panel"><h3 style="font-family:'DM Sans';font-size:16px">Local mode note</h3><p class="muted">Products and images sync with Supabase. Hero, theme and store settings are shared through Supabase; cart and login data remain local to this browser. This is not enterprise-level authentication and it does not provide server-side security.</p></div>`;
+  $("settingsForm").addEventListener("submit",async e=>{
     e.preventDefault();data.settings={...data.settings,storeName:$("sName").value.trim()||"Cloud Clothing",tagline:$("sTagline").value.trim(),whatsapp:$("sWhatsapp").value.trim(),currency:$("sCurrency").value.trim()||"USD",facebook:$("sFacebook").value.trim(),instagram:$("sInstagram").value.trim(),tiktok:$("sTikTok").value.trim(),ownerUsername:$("sOwnerUser").value.trim()||"ajijul1",ownerPassword:$("sOwnerPass").value};
     if(!data.settings.ownerPassword)return showToast("Owner password cannot be empty.","bad");
-    if(persist("settings save")){renderAll();renderAdminPage();showToast("Settings saved successfully");}else showToast("Could not save settings.","bad");
+    if(persist("settings save")){
+      const cloudSaved=await saveSiteSettings("settings save");
+      renderAll();renderAdminPage();
+      showToast(cloudSaved?"Settings saved successfully":"Settings saved locally, but cloud save failed.",cloudSaved?"good":"bad");
+    }else showToast("Could not save settings.","bad");
   });
 }
 
