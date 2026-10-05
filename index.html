@@ -552,6 +552,11 @@ function visibleProducts(){return data.products.filter(p=>p.visible);}
 function getCategory(name){return data.categories.find(c=>c.name===name);}
 function getCollection(name){return data.collections.find(c=>c.name===name);}
 function productImage(p){return p.image || FALLBACK_IMG;}
+function productCode(p){
+  if(p && p.code) return String(p.code);
+  const id=String(p?.id || "").replace(/[^a-zA-Z0-9]/g,"").slice(-8).toUpperCase();
+  return "CC-"+(id || "PRODUCT");
+}
 function whatsappUrl(message){
   const n=(data.settings.whatsapp||"").replace(/[^\d]/g,"");
   if(!n){showToast("Add a WhatsApp number in Settings first.","bad");return "#";}
@@ -746,7 +751,7 @@ function getCheckoutItems(){return data.cart.map(i=>({...i,p:data.products.find(
 function renderCheckoutSummary(){
   const box=$("checkoutSummary"),items=getCheckoutItems();if(!box)return;
   const total=items.reduce((s,x)=>s+x.p.price*x.qty,0);
-  box.innerHTML=items.map(x=>`<div class="checkout-summary-row"><span>${escapeHtml(x.p.name)} × ${x.qty}</span><strong>${money(x.p.price*x.qty)}</strong></div>`).join("")+`<div class="checkout-summary-row checkout-summary-total"><span>সর্বমোট</span><strong>${money(total)}</strong></div>`;
+  box.innerHTML=items.map(x=>`<div class="checkout-summary-row" style="display:flex;align-items:center;gap:12px"><img src="${escapeAttr(productImage(x.p))}" alt="" style="width:64px;height:64px;object-fit:cover;border-radius:10px;border:1px solid var(--border)"><span style="flex:1"><strong>${escapeHtml(x.p.name)}</strong><small style="display:block;color:var(--muted)">কোড: ${escapeHtml(productCode(x.p))} · ${x.qty} × ${money(x.p.price)}</small></span><strong>${money(x.p.price*x.qty)}</strong></div>`).join("")+`<div class="checkout-summary-row checkout-summary-total"><span>সর্বমোট</span><strong>${money(total)}</strong></div>`;
 }
 function openCheckoutFromCart(){if(!getCheckoutItems().length)return showToast("কার্ট খালি।","bad");closeCart();openCheckout();}
 function openCheckoutSingle(id){const p=data.products.find(x=>x.id===id);if(!p||p.stock<=0)return showToast("পণ্যটি এখন স্টকে নেই।","bad");data.cart=[{id:p.id,qty:1}];if(!persist("buy now"))return showToast("অর্ডার প্রস্তুত করা যায়নি।","bad");renderCart();openCheckout();}
@@ -762,7 +767,8 @@ $("checkoutForm").addEventListener("submit",async function(e){
   const total=items.reduce((s,x)=>s+x.p.price*x.qty,0);
   const message=`🛍️ ${data.settings.storeName} অর্ডার\n\n👤 নাম: ${name}\n📱 মোবাইল: ${phone}\n📍 জেলা: ${district}\n🏢 থানা/উপজেলা: ${upazila}\n🏠 গ্রাম/এলাকা: ${village}\n📝 বিস্তারিত ঠিকানা: ${address||"দেওয়া হয়নি"}\n\n${lines}\n\n📏 সাইজ: ${size||"নির্বাচন করা হয়নি"}\n🎨 রঙ: ${color||"নির্বাচন করা হয়নি"}\n💬 নোট: ${note||"নেই"}\n\n💰 সর্বমোট: ${money(total)}\n\n✅ আমি অর্ডারটি নিশ্চিত করতে চাই।`;
   const url=whatsappUrl(message);if(url==="#")return;
-  if(!supabaseReady)return showToast("অর্ডার সংরক্ষণের জন্য Supabase সংযোগ প্রয়োজন।","bad");
+  const popup=window.open("about:blank","_blank");
+  if(!supabaseReady){if(popup)popup.close();return showToast("অর্ডার সংরক্ষণের জন্য Supabase সংযোগ প্রয়োজন।","bad");}
   try{
     const payload={p_customer_name:name,p_phone:phone,p_district:district,p_upazila:upazila,p_village:village,p_address:address||"",p_size:size||"",p_color:color||"",p_note:note||"",p_items:items.map(x=>({product_id:String(x.p.id),product_name:x.p.name,product_code:productCode(x.p),price:Number(x.p.price||0),quantity:Number(x.qty||1),image:productImage(x.p)})),p_total:Number(total||0)};
     const saved=await cloudFetch('/rest/v1/rpc/place_order',{method:'POST',body:JSON.stringify(payload)});
@@ -770,11 +776,11 @@ $("checkoutForm").addEventListener("submit",async function(e){
     if(!result||!result.order_id)throw new Error("অর্ডার সংরক্ষণ করা যায়নি।");
     items.forEach(x=>{const p=data.products.find(p=>p.id===x.p.id);if(p)p.stock=Math.max(0,p.stock-Number(x.qty||0));});
     data.cart=[];persist("order placed");renderAll();
-    const waWindow=window.open('about:blank','_blank');
-    if(waWindow) waWindow.location.href=url; else window.location.href=url;
+    if(popup){popup.location.href=url;}else{window.location.href=url;}
     showToast("অর্ডার সংরক্ষিত হয়েছে। স্টকও আপডেট হয়েছে।");
     closeModal("checkoutModal");
   }catch(err){
+    if(typeof popup!=="undefined" && popup) popup.close();
     console.error("Order save failed",err);
     showToast("অর্ডার সংরক্ষণ হয়নি: "+(err?.message||err),"bad");
   }
@@ -1252,7 +1258,7 @@ async function renderOrders(){
   <p class="muted">WhatsApp-এ পাঠানোর আগে প্রতিটি অর্ডার Supabase-এ সংরক্ষণ হয় এবং স্টক অটোমেটিক কমে যায়।</p>
   <div style="padding:15px;background:#f7f4ef;border-radius:12px"><strong>WhatsApp:</strong> ${escapeHtml(n)}<br><span class="muted">মোট সংরক্ষিত অর্ডার: ${list.length}</span></div></div>
   <div class="admin-panel"><div class="panel-head"><h3>সাম্প্রতিক অর্ডার</h3></div>
-  ${list.length?list.map(o=>{let items=[];try{items=typeof o.items==='string'?JSON.parse(o.items):(o.items||[])}catch(_){}return `<div style="padding:14px 0;border-bottom:1px solid var(--border)"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><strong>${escapeHtml(o.customer_name||'—')}</strong><span class="muted">${escapeHtml(new Date(o.created_at).toLocaleString('bn-BD'))}</span></div><div class="muted" style="margin-top:5px">📱 ${escapeHtml(o.phone||'')} · 📍 ${escapeHtml(o.district||'')} · ${escapeHtml(o.upazila||'')}</div><div style="margin-top:7px">${items.map(i=>`<span style="display:inline-block;margin:3px 5px 3px 0;padding:6px 9px;background:#f7f4ef;border-radius:8px">${escapeHtml(i.product_name||'')} × ${Number(i.quantity||0)}</span>`).join('')}</div><strong style="display:block;margin-top:7px">মোট: ${money(o.total||0)}</strong></div>`}).join(''):`<div class="empty"><strong>এখনও কোনো অর্ডার নেই</strong><p class="muted">কাস্টমার Buy Now → Confirm Order করলে এখানে অর্ডার দেখা যাবে।</p></div>`}
+  ${list.length?list.map(o=>{let items=[];try{items=typeof o.items==='string'?JSON.parse(o.items):(o.items||[])}catch(_){}return `<div style="padding:14px 0;border-bottom:1px solid var(--border)"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><strong>${escapeHtml(o.customer_name||'—')}</strong><span class="muted">${escapeHtml(new Date(o.created_at).toLocaleString('bn-BD'))}</span></div><div class="muted" style="margin-top:5px">📱 ${escapeHtml(o.phone||'')} · 📍 ${escapeHtml(o.district||'')} · ${escapeHtml(o.upazila||'')}</div><div style="margin-top:7px">${items.map(i=>`<span style="display:inline-flex;align-items:center;gap:8px;margin:3px 5px 3px 0;padding:6px 9px;background:#f7f4ef;border-radius:8px"><img src="${escapeAttr(i.image||FALLBACK_IMG)}" style="width:42px;height:42px;object-fit:cover;border-radius:7px"><span>${escapeHtml(i.product_name||'')}<small style="display:block;color:#777">${escapeHtml(i.product_code||'')} × ${Number(i.quantity||0)}</small></span></span>`).join('')}</div><strong style="display:block;margin-top:7px">মোট: ${money(o.total||0)}</strong></div>`}).join(''):`<div class="empty"><strong>এখনও কোনো অর্ডার নেই</strong><p class="muted">কাস্টমার Buy Now → Confirm Order করলে এখানে অর্ডার দেখা যাবে।</p></div>`}
   </div>`;
 }
 function renderAdminHero(){
