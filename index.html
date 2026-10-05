@@ -109,6 +109,23 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
 .filterbar select{border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:10px 13px;color:var(--text)}
 .collection-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
 .collection-card{min-height:220px;border-radius:22px;padding:28px;background:linear-gradient(135deg,var(--surface2),var(--surface));border:1px solid var(--border);display:flex;flex-direction:column;justify-content:end}
+
+/* Bengali checkout */
+.checkout-modal{width:min(760px,100%)}
+.checkout-title{font-family:"Playfair Display",Georgia,serif;font-size:30px}
+.checkout-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.checkout-field{position:relative}.checkout-field.full{grid-column:1/-1}
+.checkout-field label{display:block;font-size:12px;font-weight:800;margin:0 0 7px;color:var(--text)}
+.checkout-field input,.checkout-field select,.checkout-field textarea{width:100%;padding:13px 14px 13px 42px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);outline:none}
+.checkout-field textarea{min-height:82px;resize:vertical}
+.checkout-field input:focus,.checkout-field select:focus,.checkout-field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(177,138,74,.12)}
+.checkout-icon{position:absolute;left:14px;top:35px;font-size:18px;pointer-events:none}
+.checkout-summary{margin-top:18px;padding:16px;border:1px solid var(--border);border-radius:14px;background:var(--surface2)}
+.checkout-summary-row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font-size:13px}
+.checkout-summary-total{border-top:1px solid var(--border);margin-top:6px;padding-top:12px;font-weight:900;font-size:18px}
+.address-help{font-size:11px;color:var(--muted);margin-top:6px}
+@media(max-width:650px){.checkout-grid{grid-template-columns:1fr}.checkout-field.full{grid-column:auto}.checkout-title{font-size:26px}}
+
 .modal-backdrop{position:fixed;inset:0;background:rgba(18,15,12,.58);z-index:100;display:none;align-items:center;justify-content:center;padding:16px}
 .modal-backdrop.open{display:flex}
 .modal{width:min(720px,100%);max-height:92vh;overflow:auto;background:var(--surface);border-radius:22px;border:1px solid var(--border);box-shadow:0 30px 90px rgba(0,0,0,.22)}
@@ -160,19 +177,6 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
 @media(max-width:1050px){.product-grid{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(3,1fr)}.category-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:800px){.admin-workspace{grid-template-columns:1fr}.admin-preview-panel{position:relative;top:auto}.navlinks{display:none}.mobile-toggle{display:grid}.nav-actions .whatsapp-nav{display:none}.product-grid{grid-template-columns:repeat(2,1fr)}.story-grid,.product-detail,.color-layout{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.collection-strip{grid-template-columns:1fr}.hero-card{min-height:540px}.admin-side{transform:translateX(-105%);transition:.25s}.admin-side.open{transform:none}.admin-main{margin-left:0;width:100%;padding:15px}.mobile-admin-toggle{display:inline-grid}.stats{grid-template-columns:repeat(2,1fr)}.admin-table-wrap{overflow:auto}.admin-table{min-width:720px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.preset-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.container{width:min(100% - 22px,1180px)}.nav{height:65px}.logo{font-size:20px}.hero{padding-top:12px}.hero-card{border-radius:18px;min-height:550px}.hero-content{padding:28px 22px}.section{padding:55px 0}.category-grid{grid-template-columns:1fr 1fr}.category-card{min-height:150px;padding:15px}.product-grid{gap:9px}.product-info{padding:11px}.product-title{font-size:14px}.product-actions .btn{font-size:10px;padding:9px 6px}.footer-grid{grid-template-columns:1fr}.footer-bottom{display:block}.footer-bottom>*{margin:5px 0}.whatsapp-inner{display:block}.whatsapp-inner .btn{margin-top:12px}.stats{grid-template-columns:1fr 1fr}.admin-top{align-items:flex-start}.color-list{grid-template-columns:1fr}.login-card{padding:22px}}
-
-/* EASY CHECKOUT */
-.checkout-summary{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:16px}
-.checkout-item{padding:12px 0;border-bottom:1px solid var(--border)}
-.checkout-item:last-child{border-bottom:0}
-.checkout-item-head{display:flex;gap:10px;align-items:center}
-.checkout-item-head img{width:58px;height:66px;object-fit:cover;border-radius:9px;background:var(--surface)}
-.checkout-item-title{font-weight:800}
-.checkout-item-price{font-size:12px;color:var(--muted)}
-.checkout-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-.checkout-note{font-size:12px;color:var(--muted);margin:8px 0 0}
-@media(max-width:600px){.checkout-options{grid-template-columns:1fr}}
-
 </style>
 </head>
 <body>
@@ -348,23 +352,28 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
 <div class="drawer" id="cartDrawer">
   <div class="drawer-head"><h3 style="font-family:'DM Sans'">Your cart</h3><button class="icon-btn" onclick="closeCart()">×</button></div>
   <div class="drawer-body" id="cartBody"></div>
-  <div class="cart-foot"><div class="total-row"><span>Subtotal</span><span id="cartTotal">$0.00</span></div><button class="btn btn-primary" style="width:100%" onclick="checkoutWhatsApp()">Order via WhatsApp</button><button class="btn btn-outline" style="width:100%;margin-top:8px" onclick="clearCart()">Clear cart</button></div>
+  <div class="cart-foot"><div class="total-row"><span>Subtotal</span><span id="cartTotal">$0.00</span></div><button class="btn btn-primary" style="width:100%" onclick="openCheckoutFromCart()">অর্ডার নিশ্চিত করুন</button><button class="btn btn-outline" style="width:100%;margin-top:8px" onclick="clearCart()">Clear cart</button></div>
 </div>
 
 <div class="modal-backdrop" id="checkoutModal">
-  <div class="modal large">
-    <div class="modal-head"><h3 style="font-family:'DM Sans'">Checkout</h3><button class="icon-btn" onclick="closeModal('checkoutModal')">×</button></div>
+  <div class="modal checkout-modal">
+    <div class="modal-head"><div><div class="eyebrow">Cloud Clothing</div><h3 class="checkout-title">অর্ডার নিশ্চিত করুন</h3></div><button class="icon-btn" onclick="closeModal('checkoutModal')">×</button></div>
     <div class="modal-body">
-      <div id="checkoutSummary" class="checkout-summary"></div>
+      <p class="muted" style="margin-top:0">আপনার তথ্য নির্বাচন/লিখে নিচের বাটনে চাপুন। এরপর WhatsApp-এ অর্ডার পাঠানো হবে।</p>
       <form id="checkoutForm">
-        <div class="form-grid">
-          <div class="field"><label>Full Name *</label><input id="checkoutName" required placeholder="Aziz"></div>
-          <div class="field"><label>Phone Number *</label><input id="checkoutPhone" type="tel" required placeholder="017********"></div>
-          <div class="field full"><label>Address *</label><textarea id="checkoutAddress" required rows="3" placeholder="House, road, area, city"></textarea></div>
-          <div class="field full"><label>Order Note (optional)</label><textarea id="checkoutNote" rows="2" placeholder="Any extra information..."></textarea></div>
+        <div class="checkout-grid">
+          <div class="checkout-field"><label>আপনার নাম</label><span class="checkout-icon">👤</span><input id="coName" required placeholder="নাম লিখুন"></div>
+          <div class="checkout-field"><label>মোবাইল নম্বর</label><span class="checkout-icon">📱</span><input id="coPhone" required inputmode="tel" placeholder="01XXXXXXXXX"></div>
+          <div class="checkout-field"><label>জেলা নির্বাচন করুন</label><span class="checkout-icon">📍</span><select id="coDistrict" required><option value="">জেলা নির্বাচন করুন</option></select></div>
+          <div class="checkout-field"><label>থানা / উপজেলা</label><span class="checkout-icon">🏢</span><select id="coUpazila" required disabled><option value="">আগে জেলা নির্বাচন করুন</option></select></div>
+          <div class="checkout-field full"><label>গ্রাম / এলাকা</label><span class="checkout-icon">🏠</span><input id="coVillage" required placeholder="গ্রাম / মহল্লা / এলাকার নাম"></div>
+          <div class="checkout-field full"><label>বাড়ির ঠিকানা / বিস্তারিত ঠিকানা</label><span class="checkout-icon">📝</span><textarea id="coAddress" placeholder="বাড়ি নম্বর, রোড, ল্যান্ডমার্ক ইত্যাদি (যদি থাকে)"></textarea></div>
+          <div class="checkout-field"><label>সাইজ</label><span class="checkout-icon">📏</span><select id="coSize"><option value="">সাইজ নির্বাচন করুন</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select></div>
+          <div class="checkout-field"><label>রঙ</label><span class="checkout-icon">🎨</span><select id="coColor"><option value="">রঙ নির্বাচন করুন</option><option>কালো</option><option>সাদা</option><option>নীল</option><option>লাল</option><option>সবুজ</option><option>বাদামি</option><option>অন্যান্য</option></select></div>
+          <div class="checkout-field full"><label>অতিরিক্ত নোট</label><span class="checkout-icon">💬</span><textarea id="coNote" placeholder="কোনো বিশেষ নির্দেশনা থাকলে লিখুন"></textarea></div>
         </div>
-        <p class="checkout-note">Size and color are selected for each product above. After confirming, WhatsApp will open with your complete order message.</p>
-        <div class="admin-actions"><button type="button" class="btn btn-outline" onclick="closeModal('checkoutModal')">Back</button><button class="btn btn-primary" type="submit">Confirm Order on WhatsApp</button></div>
+        <div class="checkout-summary" id="checkoutSummary"></div>
+        <button class="btn btn-primary" type="submit" style="width:100%;margin-top:14px;padding:15px">🟢 WhatsApp-এ অর্ডার নিশ্চিত করুন</button>
       </form>
     </div>
   </div>
@@ -666,47 +675,96 @@ function removeCart(id){data.cart=data.cart.filter(x=>x.id!==id);if(persist("rem
 function clearCart(){if(!data.cart.length)return;data.cart=[];if(persist("clear cart")){renderCart();showToast("Cart cleared");}}
 function openCart(){$("cartDrawer").classList.add("open")}
 function closeCart(){$("cartDrawer").classList.remove("open")}
-let directCheckoutItem=null;
-function getCheckoutItems(){
-  if(directCheckoutItem){const p=data.products.find(p=>p.id===directCheckoutItem.id);return p?[{id:p.id,qty:directCheckoutItem.qty,p}]:[];}
-  return data.cart.map(i=>({...i,p:data.products.find(p=>p.id===i.id)})).filter(x=>x.p);
+const BD_DISTRICTS = {
+"ঢাকা":["ধামরাই","দোহার","কেরানীগঞ্জ","নবাবগঞ্জ","সাভার","আশুলিয়া","দক্ষিণ কেরানীগঞ্জ","দারুস সালাম","মিরপুর","পল্লবী","উত্তরা"],
+"চট্টগ্রাম":["আনোয়ারা","বাঁশখালী","বোয়ালখালী","চন্দনাইশ","ফটিকছড়ি","হাটহাজারী","লোহাগাড়া","মীরসরাই","পটিয়া","রাঙ্গুনিয়া","সন্দ্বীপ","সাতকানিয়া","সীতাকুণ্ড","কোতোয়ালী","পাহাড়তলী"],
+"রাজশাহী":["বাঘা","বাগমারা","চারঘাট","দুর্গাপুর","পুঠিয়া","তানোর","গোদাগাড়ী","মোহনপুর","পবা"],
+"খুলনা":["বটিয়াঘাটা","ডুমুরিয়া","দাকোপ","দিঘলিয়া","কয়রা","পাইকগাছা","রূপসা","তেরখাদা","ফুলতলা"],
+"বরিশাল":["আগৈলঝাড়া","বাবুগঞ্জ","বাকেরগঞ্জ","বানারীপাড়া","গৌরনদী","হিজলা","মেহেন্দিগঞ্জ","মুলাদী","উজিরপুর","বরিশাল সদর"],
+"সিলেট":["বালাগঞ্জ","বিয়ানীবাজার","বিশ্বনাথ","কোম্পানীগঞ্জ","ফেঞ্চুগঞ্জ","গোলাপগঞ্জ","জৈন্তাপুর","কানাইঘাট","ওসমানীনগর","সিলেট সদর"],
+"রংপুর":["বদরগঞ্জ","গংগাচড়া","কাউনিয়া","মিঠাপুকুর","পীরগাছা","পীরগঞ্জ","রংপুর সদর","তারাগঞ্জ"],
+"ময়মনসিংহ":["ভালুকা","ধোবাউড়া","ফুলবাড়িয়া","গফরগাঁও","গৌরীপুর","হালুয়াঘাট","ঈশ্বরগঞ্জ","মুক্তাগাছা","নান্দাইল","ফুলপুর","ত্রিশাল","ময়মনসিংহ সদর"],
+"কুমিল্লা":["আদর্শ সদর","বুড়িচং","চান্দিনা","চৌদ্দগ্রাম","দাউদকান্দি","দেবিদ্বার","হোমনা","লাকসাম","মনোহরগঞ্জ","মুরাদনগর","নাঙ্গলকোট","তিতাস"],
+"ফরিদপুর":["আলফাডাঙ্গা","ভাঙ্গা","বোয়ালমারী","চরভদ্রাসন","ফরিদপুর সদর","মধুখালী","নগরকান্দা","সদরপুর","সালথা"],
+"গাজীপুর":["কালীগঞ্জ","কালিয়াকৈর","কাপাসিয়া","শ্রীপুর","গাজীপুর সদর","টঙ্গী"],
+"নারায়ণগঞ্জ":["আড়াইহাজার","বন্দর","নারায়ণগঞ্জ সদর","রূপগঞ্জ","সোনারগাঁ"],
+"নরসিংদী":["বেলাব","মনোহরদী","নরসিংদী সদর","পলাশ","রায়পুরা","শিবপুর"],
+"কিশোরগঞ্জ":["অষ্টগ্রাম","বাজিতপুর","ভৈরব","হোসেনপুর","ইটনা","করিমগঞ্জ","কটিয়াদী","কুলিয়ারচর","মিঠামইন","নিকলী","পাকুন্দিয়া","তাড়াইল","কিশোরগঞ্জ সদর"],
+"টাঙ্গাইল":["বাসাইল","ভূঞাপুর","দেলদুয়ার","ধনবাড়ী","ঘাটাইল","গোপালপুর","কালিহাতী","মধুপুর","মির্জাপুর","নাগরপুর","সখীপুর","টাঙ্গাইল সদর"],
+"যশোর":["অভয়নগর","বাঘারপাড়া","চৌগাছা","ঝিকরগাছা","কেশবপুর","মনিরামপুর","শার্শা","যশোর সদর"],
+"কুষ্টিয়া":["ভেড়ামারা","দৌলতপুর","খোকসা","কুমারখালী","মিরপুর","কুষ্টিয়া সদর"],
+"বগুড়া":["আদমদিঘী","বগুড়া সদর","ধুনট","দুপচাঁচিয়া","গাবতলী","কাহালু","নন্দীগ্রাম","শাজাহানপুর","শেরপুর","শিবগঞ্জ","সোনাতলা","সারিয়াকান্দি"],
+"দিনাজপুর":["বিরামপুর","বীরগঞ্জ","বিরল","বোচাগঞ্জ","চিরিরবন্দর","ফুলবাড়ী","ঘোড়াঘাট","হাকিমপুর","কাহারোল","খানসামা","নবাবগঞ্জ","পার্বতীপুর","দিনাজপুর সদর"],
+"পাবনা":["আটঘরিয়া","বেড়া","ভাঙ্গুড়া","চাটমোহর","ফরিদপুর","ঈশ্বরদী","সাঁথিয়া","সুজানগর","পাবনা সদর"],
+"নোয়াখালী":["বেগমগঞ্জ","চাটখিল","কোম্পানীগঞ্জ","হাতিয়া","সেনবাগ","সুবর্ণচর","সোনাইমুড়ী","নোয়াখালী সদর"],
+"ব্রাহ্মণবাড়িয়া":["আখাউড়া","আশুগঞ্জ","বাঞ্ছারামপুর","ব্রাহ্মণবাড়িয়া সদর","কসবা","নবীনগর","নাসিরনগর","সরাইল","বিজয়নগর"],
+"বাগেরহাট":["চিতলমারী","ফকিরহাট","কচুয়া","মোল্লাহাট","মোংলা","মোড়েলগঞ্জ","রামপাল","শরণখোলা","বাগেরহাট সদর"],
+"ঝিনাইদহ":["হরিণাকুন্ডু","কালীগঞ্জ","কোটচাঁদপুর","মহেশপুর","শৈলকুপা","ঝিনাইদহ সদর"],
+"সাতক্ষীরা":["আশাশুনি","কলারোয়া","কালিগঞ্জ","শ্যামনগর","তালা","সাতক্ষীরা সদর","দেবহাটা"],
+"চাঁপাইনবাবগঞ্জ":["ভোলাহাট","গোমস্তাপুর","নাচোল","শিবগঞ্জ","চাঁপাইনবাবগঞ্জ সদর"],
+"নাটোর":["বড়াইগ্রাম","বাগাতিপাড়া","লালপুর","নলডাঙ্গা","সিংড়া","নাটোর সদর","গুরুদাসপুর"],
+"নওগাঁ":["আত্রাই","বদলগাছী","ধামইরহাট","মান্দা","মহাদেবপুর","নিয়ামতপুর","পত্নীতলা","রাণীনগর","সাপাহার","নওগাঁ সদর","পোরশা"],
+"সিরাজগঞ্জ":["বেলকুচি","চৌহালী","কামারখন্দ","কাজীপুর","রায়গঞ্জ","শাহজাদপুর","তাড়াশ","উল্লাপাড়া","সিরাজগঞ্জ সদর"],
+"জয়পুরহাট":["আক্কেলপুর","কালাই","ক্ষেতলাল","পাঁচবিবি","জয়পুরহাট সদর"],
+"লালমনিরহাট":["আদিতমারী","কালীগঞ্জ","হাতীবান্ধা","পাটগ্রাম","লালমনিরহাট সদর"],
+"নীলফামারী":["ডিমলা","ডোমার","জলঢাকা","কিশোরগঞ্জ","সৈয়দপুর","নীলফামারী সদর"],
+"গাইবান্ধা":["ফুলছড়ি","গোবিন্দগঞ্জ","পলাশবাড়ী","সাদুল্লাপুর","সাঘাটা","সুন্দরগঞ্জ","গাইবান্ধা সদর"],
+"ঠাকুরগাঁও":["বালিয়াডাঙ্গী","হরিপুর","পীরগঞ্জ","রাণীশংকৈল","ঠাকুরগাঁও সদর"],
+"পঞ্চগড়":["আটোয়ারী","বোদা","দেবীগঞ্জ","তেঁতুলিয়া","পঞ্চগড় সদর"],
+"কুড়িগ্রাম":["ভুরুঙ্গামারী","চর রাজিবপুর","চিলমারী","ফুলবাড়ী","নাগেশ্বরী","রাজারহাট","রৌমারী","উলিপুর","কুড়িগ্রাম সদর"],
+"নেত্রকোনা":["আটপাড়া","বারহাট্টা","দুর্গাপুর","খালিয়াজুরী","কলমাকান্দা","কেন্দুয়া","মদন","মোহনগঞ্জ","পূর্বধলা","নেত্রকোনা সদর"],
+"জামালপুর":["বকশীগঞ্জ","দেওয়ানগঞ্জ","ইসলামপুর","মাদারগঞ্জ","মেলান্দহ","সরিষাবাড়ী","জামালপুর সদর"],
+"শেরপুর":["ঝিনাইগাতী","নকলা","নালিতাবাড়ী","শ্রীবরদী","শেরপুর সদর"],
+"মানিকগঞ্জ":["দৌলতপুর","ঘিওর","হরিরামপুর","মানিকগঞ্জ সদর","সাটুরিয়া","শিবালয়","সিংগাইর"],
+"মুন্সীগঞ্জ":["গজারিয়া","লৌহজং","সিরাজদিখান","শ্রীনগর","টঙ্গীবাড়ী","মুন্সীগঞ্জ সদর"],
+"মাদারীপুর":["কালকিনি","রাজৈর","শিবচর","মাদারীপুর সদর","ডাসার"],
+"গোপালগঞ্জ":["কাশিয়ানী","কোটালীপাড়া","মুকসুদপুর","টুঙ্গিপাড়া","গোপালগঞ্জ সদর"],
+"রাজবাড়ী":["বালিয়াকান্দি","গোয়ালন্দ","কালুখালী","পাংশা","রাজবাড়ী সদর"],
+"শরীয়তপুর":["ভেদরগঞ্জ","ডামুড্যা","গোসাইরহাট","জাজিরা","নড়িয়া","শরীয়তপুর সদর"],
+"পটুয়াখালী":["বাউফল","দশমিনা","দুমকি","গলাচিপা","কলাপাড়া","মির্জাগঞ্জ","রাঙ্গাবালী","পটুয়াখালী সদর"],
+"ভোলা":["বোরহানউদ্দিন","চরফ্যাশন","দৌলতখান","লালমোহন","মনপুরা","তজুমদ্দিন","ভোলা সদর"],
+"ঝালকাঠি":["কাঁঠালিয়া","নলছিটি","রাজাপুর","ঝালকাঠি সদর"],
+"পিরোজপুর":["ভান্ডারিয়া","কাউখালী","মঠবাড়িয়া","নাজিরপুর","নেছারাবাদ","স্বরূপকাঠি","পিরোজপুর সদর"],
+"হবিগঞ্জ":["আজমিরীগঞ্জ","বাহুবল","বানিয়াচং","চুনারুঘাট","হবিগঞ্জ সদর","লাখাই","মাধবপুর","নবীগঞ্জ","শায়েস্তাগঞ্জ"],
+"মৌলভীবাজার":["বড়লেখা","জুড়ী","কমলগঞ্জ","কুলাউড়া","রাজনগর","শ্রীমঙ্গল","মৌলভীবাজার সদর"],
+"সুনামগঞ্জ":["ছাতক","দিরাই","ধর্মপাশা","দোয়ারাবাজার","জামালগঞ্জ","জগন্নাথপুর","শাল্লা","তাহিরপুর","সুনামগঞ্জ সদর","শান্তিগঞ্জ"],
+"কক্সবাজার":["চকরিয়া","কুতুবদিয়া","মহেশখালী","পেকুয়া","রামু","টেকনাফ","উখিয়া","কক্সবাজার সদর"],
+"ফেনী":["ছাগলনাইয়া","দাগনভূঞা","ফেনী সদর","ফুলগাজী","পরশুরাম","সোনাগাজী"],
+"লক্ষ্মীপুর":["কমলনগর","রামগঞ্জ","রামগতি","রায়পুর","লক্ষ্মীপুর সদর"],
+"চাঁদপুর":["ফরিদগঞ্জ","হাইমচর","হাজীগঞ্জ","কচুয়া","মতলব উত্তর","মতলব দক্ষিণ","শাহরাস্তি","চাঁদপুর সদর"],
+"খাগড়াছড়ি":["দীঘিনালা","গুইমারা","খাগড়াছড়ি সদর","লক্ষ্মীছড়ি","মহালছড়ি","মানিকছড়ি","মাটিরাঙ্গা","পানছড়ি","রামগড়"],
+"রাঙ্গামাটি":["বাঘাইছড়ি","বরকল","বিলাইছড়ি","জুরাছড়ি","কাপ্তাই","কাউখালী","লংগদু","নানিয়ারচর","রাজস্থলী","রাঙ্গামাটি সদর"],
+"বান্দরবান":["আলীকদম","বান্দরবান সদর","লামা","নাইক্ষ্যংছড়ি","রোয়াংছড়ি","রুমা","থানচি"]
+};
+
+function initCheckoutAddress(){
+  const d=$("coDistrict"),u=$("coUpazila");if(!d||!u)return;
+  d.innerHTML='<option value="">জেলা নির্বাচন করুন</option>'+Object.keys(BD_DISTRICTS).sort().map(x=>`<option value="${escapeAttr(x)}">${escapeHtml(x)}</option>`).join("");
+  d.onchange=()=>{const list=BD_DISTRICTS[d.value]||[];u.disabled=!list.length;u.innerHTML=list.length?'<option value="">থানা / উপজেলা নির্বাচন করুন</option>'+list.map(x=>`<option value="${escapeAttr(x)}">${escapeHtml(x)}</option>`).join(""):'<option value="">থানা / উপজেলা পাওয়া যায়নি</option>';};
 }
-function buyNow(id){
-  const p=data.products.find(x=>x.id===id);
-  if(!p||p.stock<=0)return showToast("Product is out of stock.","bad");
-  directCheckoutItem={id,qty:1};
-  closeModal("detailModal");
-  openCheckout();
-}
-function openCheckout(){
-  const items=getCheckoutItems();
-  if(!items.length)return showToast("Your cart is empty.","bad");
+function getCheckoutItems(){return data.cart.map(i=>({...i,p:data.products.find(p=>p.id===i.id)})).filter(x=>x.p)}
+function renderCheckoutSummary(){
+  const box=$("checkoutSummary"),items=getCheckoutItems();if(!box)return;
   const total=items.reduce((s,x)=>s+x.p.price*x.qty,0);
-  $("checkoutSummary").innerHTML=items.map((x,i)=>`<div class="checkout-item">
-    <div class="checkout-item-head"><img src="${escapeAttr(productImage(x.p))}" alt=""><div style="flex:1"><div class="checkout-item-title">${escapeHtml(x.p.name)}</div><div class="checkout-item-price">${money(x.p.price)} × ${x.qty} = ${money(x.p.price*x.qty)}</div></div></div>
-    <div class="checkout-options">
-      <div class="field"><label>Size</label><select id="checkoutSize_${i}"><option value="">Select size</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select></div>
-      <div class="field"><label>Color</label><input id="checkoutColor_${i}" placeholder="Black"></div>
-    </div>
-  </div>`).join("")+`<div class="total-row" style="margin-top:12px"><strong>Total</strong><strong>${money(total)}</strong></div>`;
-  $("checkoutForm").reset();
-  $("checkoutModal").classList.add("open");
+  box.innerHTML=items.map(x=>`<div class="checkout-summary-row"><span>${escapeHtml(x.p.name)} × ${x.qty}</span><strong>${money(x.p.price*x.qty)}</strong></div>`).join("")+`<div class="checkout-summary-row checkout-summary-total"><span>সর্বমোট</span><strong>${money(total)}</strong></div>`;
 }
-function checkoutWhatsApp(){openCheckout();}
-function submitCheckout(){
-  const items=getCheckoutItems();
-  if(!items.length){showToast("Your cart is empty.","bad");return;}
-  const name=$("checkoutName").value.trim(),phone=$("checkoutPhone").value.trim(),address=$("checkoutAddress").value.trim(),note=$("checkoutNote").value.trim();
-  const lines=items.map((x,i)=>{
-    const size=$("checkoutSize_"+i).value||"Not specified";
-    const color=$("checkoutColor_"+i).value.trim()||"Not specified";
-    return `Product: ${x.p.name}\nSize: ${size}\nColor: ${color}\nQuantity: ${x.qty}\nPrice: ${money(x.p.price)}\nItem total: ${money(x.p.price*x.qty)}`;
-  }).join("\n\n");
+function openCheckoutFromCart(){if(!getCheckoutItems().length)return showToast("কার্ট খালি।","bad");closeCart();openCheckout();}
+function openCheckoutSingle(id){const p=data.products.find(x=>x.id===id);if(!p||p.stock<=0)return showToast("পণ্যটি এখন স্টকে নেই।","bad");data.cart=[{id:p.id,qty:1}];if(!persist("buy now"))return showToast("অর্ডার প্রস্তুত করা যায়নি।","bad");renderCart();openCheckout();}
+function buyNow(id){openCheckoutSingle(id)}
+function openCheckout(){initCheckoutAddress();renderCheckoutSummary();$("checkoutModal").classList.add("open")}
+function checkoutWhatsApp(){openCheckoutFromCart()}
+$("checkoutForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  const items=getCheckoutItems();if(!items.length)return showToast("কার্ট খালি।","bad");
+  const name=$("coName").value.trim(),phone=$("coPhone").value.trim(),district=$("coDistrict").value,upazila=$("coUpazila").value,village=$("coVillage").value.trim(),address=$("coAddress").value.trim(),size=$("coSize").value,color=$("coColor").value,note=$("coNote").value.trim();
+  if(!name||!phone||!district||!upazila||!village)return showToast("নাম, মোবাইল, জেলা, থানা/উপজেলা ও গ্রাম/এলাকা পূরণ করুন।","bad");
+  const lines=items.map(x=>`পণ্য: ${x.p.name}\nপরিমাণ: ${x.qty}\nদাম: ${money(x.p.price)}\nমোট: ${money(x.p.price*x.qty)}`).join("\n\n");
   const total=items.reduce((s,x)=>s+x.p.price*x.qty,0);
-  const msg=`Hello ${data.settings.storeName},\n\n🛍️ NEW ORDER\n\nCustomer Name: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n${lines}\n\nTotal: ${money(total)}${note?`\n\nNote: ${note}`:""}\n\nPlease confirm my order.`;
-  const url=whatsappUrl(msg);
-  if(url!=="#"){window.open(url,"_blank");directCheckoutItem=null;}
-}
+  const message=`🛍️ ${data.settings.storeName} অর্ডার\n\n👤 নাম: ${name}\n📱 মোবাইল: ${phone}\n📍 জেলা: ${district}\n🏢 থানা/উপজেলা: ${upazila}\n🏠 গ্রাম/এলাকা: ${village}\n📝 বিস্তারিত ঠিকানা: ${address||"দেওয়া হয়নি"}\n\n${lines}\n\n📏 সাইজ: ${size||"নির্বাচন করা হয়নি"}\n🎨 রঙ: ${color||"নির্বাচন করা হয়নি"}\n💬 নোট: ${note||"নেই"}\n\n💰 সর্বমোট: ${money(total)}\n\n✅ আমি অর্ডারটি নিশ্চিত করতে চাই।`;
+  const url=whatsappUrl(message);if(url!=="#")window.open(url,"_blank");
+});
+initCheckoutAddress();
+
 
 function openProductDetail(id){
   const p=data.products.find(x=>x.id===id);if(!p)return;activeDetailProduct=p;
@@ -718,13 +776,12 @@ function openProductDetail(id){
     <div class="price-row" style="font-size:20px;margin:16px 0">${money(p.price)} ${p.oldPrice>p.price?`<span class="old-price">${money(p.oldPrice)}</span>`:""}</div>
     <p class="muted">${escapeHtml(p.description)}</p><p><strong>${p.stock>0?(p.stock<=5?"Only "+p.stock+" left":"In stock"):"Out of stock"}</strong></p>
     <div class="qty" style="margin:18px 0"><button onclick="detailQty(-1)">−</button><span id="detailQty">1</span><button onclick="detailQty(1)">+</button></div>
-    <div style="display:flex;gap:9px;flex-wrap:wrap"><button class="btn btn-primary" ${p.stock<=0?"disabled":""} onclick="addDetailToCart()">Add to Cart</button><button class="btn btn-outline" onclick="buyNowToCheckout()">Order on WhatsApp</button></div></div>
+    <div style="display:flex;gap:9px;flex-wrap:wrap"><button class="btn btn-outline" ${p.stock<=0?"disabled":""} onclick="buyNow('${escapeAttr(p.id)}')">Buy Now</button><button class="btn btn-primary" ${p.stock<=0?"disabled":""} onclick="addDetailToCart()">Add to Cart</button></div></div>
   </div>`;
   $("detailModal").classList.add("open");
 }
 function detailQty(delta){const el=$("detailQty");let n=Number(el.textContent)+delta;n=Math.max(1,Math.min(activeDetailProduct.stock||1,n));el.textContent=n}
 function addDetailToCart(){const n=Number($("detailQty").textContent);addToCart(activeDetailProduct.id,n);closeModal("detailModal");openCart();}
-function buyNowToCheckout(){const n=Number($("detailQty").textContent);if(!activeDetailProduct||activeDetailProduct.stock<=0)return showToast("Product is out of stock.","bad");addToCart(activeDetailProduct.id,n);closeModal("detailModal");openCheckout();}
 function selectDetailImage(btn,src){$("detailMainImg").src=src;document.querySelectorAll(".thumb").forEach(x=>x.classList.remove("active"));btn.classList.add("active");}
 function closeModal(id){$(id).classList.remove("open")}
 
@@ -850,7 +907,7 @@ async function upsertCloudProduct(p){
 }
 
 async function uploadDesignImage(file,folder){
-  const bucket = folder === 'categories' ? 'category-images' : 'hero-images';
+  const bucket = folder === 'categories' ? 'category-images' : folder === 'collections' ? 'collection-images' : 'hiro-images';
   const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
   const path=folder+'/'+Date.now()+'_'+Math.random().toString(36).slice(2,9)+'.'+ext;
   const res=await fetch(SUPABASE_URL+'/storage/v1/object/'+bucket+'/'+encodeURIComponent(path),{
@@ -1330,7 +1387,6 @@ $("mobileNavBtn").addEventListener("click",()=>{
   if(n.style.display==="flex"){n.style.position="absolute";n.style.left="10px";n.style.right="10px";n.style.top="65px";n.style.padding="15px";n.style.background="var(--surface)";n.style.border="1px solid var(--border)";n.style.borderRadius="14px";n.style.flexDirection="column";n.style.alignItems="flex-start";}
 });
 $("cartBtn").addEventListener("click",openCart);
-$("checkoutForm").addEventListener("submit",e=>{e.preventDefault();submitCheckout();});
 $("searchNavBtn").addEventListener("click",()=>{scrollToShop();setTimeout(()=>$("searchInput").focus(),350)});
 ["searchInput","filterCategory","filterCollection","filterStock","filterTag","sortProducts"].forEach(id=>$(id).addEventListener("input",renderProducts));
 $("searchBtn").addEventListener("click",renderProducts);
