@@ -612,7 +612,7 @@ function productCard(p){
       <div class="product-meta"><span>${escapeHtml(p.category)}</span><span>${p.stock>0?(p.stock<=5?"Low stock":"In stock"):"Out of stock"}</span></div>
       <div class="product-title">${escapeHtml(p.name)}</div>
       <div class="price-row"><span class="price">${money(p.price)}</span>${p.oldPrice>p.price?`<span class="old-price">${money(p.oldPrice)}</span>`:""}</div>
-      <div class="product-actions"><button class="btn btn-outline" onclick="openProductDetail('${escapeAttr(p.id)}')">View</button><button class="btn btn-primary" ${p.stock<=0?"disabled":""} onclick="addToCart('${escapeAttr(p.id)}')">Add to cart</button></div>
+      <div class="product-actions"><button class="btn btn-outline" ${p.stock<=0?"disabled":""} onclick="buyNow('${escapeAttr(p.id)}')">Buy Now</button><button class="btn btn-primary" ${p.stock<=0?"disabled":""} onclick="addToCart('${escapeAttr(p.id)}')">Add to Cart</button></div>
     </div></article>`;
 }
 function renderProducts(){
@@ -666,8 +666,17 @@ function removeCart(id){data.cart=data.cart.filter(x=>x.id!==id);if(persist("rem
 function clearCart(){if(!data.cart.length)return;data.cart=[];if(persist("clear cart")){renderCart();showToast("Cart cleared");}}
 function openCart(){$("cartDrawer").classList.add("open")}
 function closeCart(){$("cartDrawer").classList.remove("open")}
+let directCheckoutItem=null;
 function getCheckoutItems(){
+  if(directCheckoutItem){const p=data.products.find(p=>p.id===directCheckoutItem.id);return p?[{id:p.id,qty:directCheckoutItem.qty,p}]:[];}
   return data.cart.map(i=>({...i,p:data.products.find(p=>p.id===i.id)})).filter(x=>x.p);
+}
+function buyNow(id){
+  const p=data.products.find(x=>x.id===id);
+  if(!p||p.stock<=0)return showToast("Product is out of stock.","bad");
+  directCheckoutItem={id,qty:1};
+  closeModal("detailModal");
+  openCheckout();
 }
 function openCheckout(){
   const items=getCheckoutItems();
@@ -696,7 +705,7 @@ function submitCheckout(){
   const total=items.reduce((s,x)=>s+x.p.price*x.qty,0);
   const msg=`Hello ${data.settings.storeName},\n\n🛍️ NEW ORDER\n\nCustomer Name: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n${lines}\n\nTotal: ${money(total)}${note?`\n\nNote: ${note}`:""}\n\nPlease confirm my order.`;
   const url=whatsappUrl(msg);
-  if(url!=="#")window.open(url,"_blank");
+  if(url!=="#"){window.open(url,"_blank");directCheckoutItem=null;}
 }
 
 function openProductDetail(id){
