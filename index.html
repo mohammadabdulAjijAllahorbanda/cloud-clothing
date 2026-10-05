@@ -763,7 +763,7 @@ $("checkoutForm").addEventListener("submit",async function(e){
   const items=getCheckoutItems();if(!items.length)return showToast("কার্ট খালি।","bad");
   const name=$("coName").value.trim(),phone=$("coPhone").value.trim(),district=$("coDistrict").value,upazila=$("coUpazila").value,village=$("coVillage").value.trim(),address=$("coAddress").value.trim(),size=$("coSize").value,color=$("coColor").value,note=$("coNote").value.trim();
   if(!name||!phone||!district||!upazila||!village)return showToast("নাম, মোবাইল, জেলা, থানা/উপজেলা ও গ্রাম/এলাকা পূরণ করুন।","bad");
-  const lines=items.map(x=>`পণ্য: ${x.p.name}\nপরিমাণ: ${x.qty}\nদাম: ${money(x.p.price)}\nমোট: ${money(x.p.price*x.qty)}`).join("\n\n");
+  const lines=items.map(x=>`পণ্য: ${x.p.name}\nকোড: ${productCode(x.p)}\nপরিমাণ: ${x.qty}\nদাম: ${money(x.p.price)}\nমোট: ${money(x.p.price*x.qty)}\n🖼️ ছবি: ${productImage(x.p)}`).join("\n\n");
   const total=items.reduce((s,x)=>s+x.p.price*x.qty,0);
   const message=`🛍️ ${data.settings.storeName} অর্ডার\n\n👤 নাম: ${name}\n📱 মোবাইল: ${phone}\n📍 জেলা: ${district}\n🏢 থানা/উপজেলা: ${upazila}\n🏠 গ্রাম/এলাকা: ${village}\n📝 বিস্তারিত ঠিকানা: ${address||"দেওয়া হয়নি"}\n\n${lines}\n\n📏 সাইজ: ${size||"নির্বাচন করা হয়নি"}\n🎨 রঙ: ${color||"নির্বাচন করা হয়নি"}\n💬 নোট: ${note||"নেই"}\n\n💰 সর্বমোট: ${money(total)}\n\n✅ আমি অর্ডারটি নিশ্চিত করতে চাই।`;
   const url=whatsappUrl(message);if(url==="#")return;
@@ -775,7 +775,15 @@ $("checkoutForm").addEventListener("submit",async function(e){
     const result=Array.isArray(saved)?saved[0]:saved;
     if(!result||!result.order_id)throw new Error("অর্ডার সংরক্ষণ করা যায়নি।");
     items.forEach(x=>{const p=data.products.find(p=>p.id===x.p.id);if(p)p.stock=Math.max(0,p.stock-Number(x.qty||0));});
-    data.cart=[];persist("order placed");renderAll();
+    data.cart=[];persist("order placed");
+    // Re-fetch the authoritative stock from Supabase so the admin panel/storefront cannot show stale stock.
+    try{
+      const freshRows=await fetchCloudProducts();
+      const freshById=new Map(freshRows.map(r=>[String(r.id),r]));
+      data.products=data.products.map(p=>{const row=freshById.get(String(p.id));return row?normalizeCloudProduct(row,p):p;});
+      persist("stock refresh after order");
+    }catch(refreshErr){console.warn("Stock refresh after order failed",refreshErr);}
+    renderAll();
     if(popup){popup.location.href=url;}else{window.location.href=url;}
     showToast("অর্ডার সংরক্ষিত হয়েছে। স্টকও আপডেট হয়েছে।");
     closeModal("checkoutModal");
