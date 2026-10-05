@@ -368,6 +368,7 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
           <div class="checkout-field"><label>থানা / উপজেলা</label><span class="checkout-icon">🏢</span><select id="coUpazila" required disabled><option value="">আগে জেলা নির্বাচন করুন</option></select></div>
           <div class="checkout-field full"><label>গ্রাম / এলাকা</label><span class="checkout-icon">🏠</span><input id="coVillage" required placeholder="গ্রাম / মহল্লা / এলাকার নাম"></div>
           <div class="checkout-field full"><label>বাড়ির ঠিকানা / বিস্তারিত ঠিকানা</label><span class="checkout-icon">📝</span><textarea id="coAddress" placeholder="বাড়ি নম্বর, রোড, ল্যান্ডমার্ক ইত্যাদি (যদি থাকে)"></textarea></div>
+          <div class="checkout-field"><label>ডেলিভারি এলাকা</label><span class="checkout-icon">🚚</span><select id="coDeliveryArea" required><option value="">ডেলিভারি এলাকা নির্বাচন করুন</option><option value="inside">ঢাকার ভিতরে — ৳80</option><option value="outside">ঢাকার বাইরে — ৳160</option></select><div class="address-help">সারা বাংলাদেশে ডেলিভারি। কুরিয়ার চার্জ অগ্রিম পরিশোধ করতে হবে।</div></div>
           <div class="checkout-field"><label>সাইজ</label><span class="checkout-icon">📏</span><select id="coSize"><option value="">সাইজ নির্বাচন করুন</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select></div>
           <div class="checkout-field"><label>রঙ</label><span class="checkout-icon">🎨</span><select id="coColor"><option value="">রঙ নির্বাচন করুন</option><option>কালো</option><option>সাদা</option><option>নীল</option><option>লাল</option><option>সবুজ</option><option>বাদামি</option><option>অন্যান্য</option></select></div>
           <div class="checkout-field full"><label>অতিরিক্ত নোট</label><span class="checkout-icon">💬</span><textarea id="coNote" placeholder="কোনো বিশেষ নির্দেশনা থাকলে লিখুন"></textarea></div>
@@ -748,24 +749,30 @@ function initCheckoutAddress(){
   d.onchange=()=>{const list=BD_DISTRICTS[d.value]||[];u.disabled=!list.length;u.innerHTML=list.length?'<option value="">থানা / উপজেলা নির্বাচন করুন</option>'+list.map(x=>`<option value="${escapeAttr(x)}">${escapeHtml(x)}</option>`).join(""):'<option value="">থানা / উপজেলা পাওয়া যায়নি</option>';};
 }
 function getCheckoutItems(){return data.cart.map(i=>({...i,p:data.products.find(p=>p.id===i.id)})).filter(x=>x.p)}
+function getDeliveryCharge(){const v=$("coDeliveryArea")?.value;return v==="inside"?80:v==="outside"?160:0;}
 function renderCheckoutSummary(){
   const box=$("checkoutSummary"),items=getCheckoutItems();if(!box)return;
-  const total=items.reduce((s,x)=>s+x.p.price*x.qty,0);
-  box.innerHTML=items.map(x=>`<div class="checkout-summary-row" style="display:flex;align-items:center;gap:12px"><img src="${escapeAttr(productImage(x.p))}" alt="" style="width:64px;height:64px;object-fit:cover;border-radius:10px;border:1px solid var(--border)"><span style="flex:1"><strong>${escapeHtml(x.p.name)}</strong><small style="display:block;color:var(--muted)">কোড: ${escapeHtml(productCode(x.p))} · ${x.qty} × ${money(x.p.price)}</small></span><strong>${money(x.p.price*x.qty)}</strong></div>`).join("")+`<div class="checkout-summary-row checkout-summary-total"><span>সর্বমোট</span><strong>${money(total)}</strong></div>`;
+  const subtotal=items.reduce((s,x)=>s+x.p.price*x.qty,0);
+  const delivery=getDeliveryCharge();
+  const total=subtotal+delivery;
+  box.innerHTML=items.map(x=>`<div class="checkout-summary-row" style="display:flex;align-items:center;gap:12px"><img src="${escapeAttr(productImage(x.p))}" alt="" style="width:64px;height:64px;object-fit:cover;border-radius:10px;border:1px solid var(--border)"><span style="flex:1"><strong>${escapeHtml(x.p.name)}</strong><small style="display:block;color:var(--muted)">কোড: ${escapeHtml(productCode(x.p))} · ${x.qty} × ${money(x.p.price)}</small></span><strong>${money(x.p.price*x.qty)}</strong></div>`).join("")+`<div class="checkout-summary-row"><span>পণ্যের মোট</span><strong>${money(subtotal)}</strong></div><div class="checkout-summary-row"><span>কুরিয়ার চার্জ</span><strong>${delivery?money(delivery):"এলাকা নির্বাচন করুন"}</strong></div><div class="checkout-summary-row checkout-summary-total"><span>সর্বমোট</span><strong>${money(total)}</strong></div>`;
 }
 function openCheckoutFromCart(){if(!getCheckoutItems().length)return showToast("কার্ট খালি।","bad");closeCart();openCheckout();}
 function openCheckoutSingle(id){const p=data.products.find(x=>x.id===id);if(!p||p.stock<=0)return showToast("পণ্যটি এখন স্টকে নেই।","bad");data.cart=[{id:p.id,qty:1}];if(!persist("buy now"))return showToast("অর্ডার প্রস্তুত করা যায়নি।","bad");renderCart();openCheckout();}
 function buyNow(id){openCheckoutSingle(id)}
-function openCheckout(){initCheckoutAddress();renderCheckoutSummary();$("checkoutModal").classList.add("open")}
+function openCheckout(){initCheckoutAddress();renderCheckoutSummary();const d=$("coDeliveryArea");if(d)d.onchange=renderCheckoutSummary;$("checkoutModal").classList.add("open")}
 function checkoutWhatsApp(){openCheckoutFromCart()}
 $("checkoutForm").addEventListener("submit",async function(e){
   e.preventDefault();
   const items=getCheckoutItems();if(!items.length)return showToast("কার্ট খালি।","bad");
-  const name=$("coName").value.trim(),phone=$("coPhone").value.trim(),district=$("coDistrict").value,upazila=$("coUpazila").value,village=$("coVillage").value.trim(),address=$("coAddress").value.trim(),size=$("coSize").value,color=$("coColor").value,note=$("coNote").value.trim();
-  if(!name||!phone||!district||!upazila||!village)return showToast("নাম, মোবাইল, জেলা, থানা/উপজেলা ও গ্রাম/এলাকা পূরণ করুন।","bad");
-  const lines=items.map(x=>`পণ্য: ${x.p.name}\nকোড: ${productCode(x.p)}\nপরিমাণ: ${x.qty}\nদাম: ${money(x.p.price)}\nমোট: ${money(x.p.price*x.qty)}\n🖼️ ছবি: ${productImage(x.p)}`).join("\n\n");
-  const total=items.reduce((s,x)=>s+x.p.price*x.qty,0);
+  const name=$("coName").value.trim(),phone=$("coPhone").value.trim(),district=$("coDistrict").value,upazila=$("coUpazila").value,village=$("coVillage").value.trim(),address=$("coAddress").value.trim(),deliveryArea=$("coDeliveryArea").value,size=$("coSize").value,color=$("coColor").value,note=$("coNote").value.trim();
+  if(!name||!phone||!district||!upazila||!village||!deliveryArea)return showToast("নাম, মোবাইল, জেলা, থানা/উপজেলা, গ্রাম/এলাকা ও ডেলিভারি এলাকা পূরণ করুন।","bad");
+  const lines=items.map(x=>`পণ্য: ${x.p.name}\nপরিমাণ: ${x.qty}\nদাম: ${money(x.p.price)}\nমোট: ${money(x.p.price*x.qty)}`).join("\n\n");
+  const subtotal=items.reduce((s,x)=>s+x.p.price*x.qty,0);
+  const delivery=deliveryArea==="inside"?80:160;
+  const total=subtotal+delivery;
   const message=`🛍️ ${data.settings.storeName} অর্ডার\n\n👤 নাম: ${name}\n📱 মোবাইল: ${phone}\n📍 জেলা: ${district}\n🏢 থানা/উপজেলা: ${upazila}\n🏠 গ্রাম/এলাকা: ${village}\n📝 বিস্তারিত ঠিকানা: ${address||"দেওয়া হয়নি"}\n\n${lines}\n\n📏 সাইজ: ${size||"নির্বাচন করা হয়নি"}\n🎨 রঙ: ${color||"নির্বাচন করা হয়নি"}\n💬 নোট: ${note||"নেই"}\n\n💰 সর্বমোট: ${money(total)}\n\n✅ আমি অর্ডারটি নিশ্চিত করতে চাই।`;
+  message += `\n\n🚚 ডেলিভারি: ${deliveryArea==="inside"?"ঢাকার ভিতরে":"ঢাকার বাইরে"}\n📦 কুরিয়ার চার্জ: ${money(delivery)}\n💳 পেমেন্ট: Cash on Delivery (COD)\n⚠️ কুরিয়ার চার্জ অগ্রিম পরিশোধ করতে হবে।\n👕 কুরিয়ার কর্তৃপক্ষের নিয়ম অনুযায়ী পণ্য চেক করে নিতে পারবেন।\n💰 সর্বমোট: ${money(total)}`;
   const url=whatsappUrl(message);if(url==="#")return;
   const popup=window.open("about:blank","_blank");
   if(!supabaseReady){if(popup)popup.close();return showToast("অর্ডার সংরক্ষণের জন্য Supabase সংযোগ প্রয়োজন।","bad");}
@@ -775,15 +782,7 @@ $("checkoutForm").addEventListener("submit",async function(e){
     const result=Array.isArray(saved)?saved[0]:saved;
     if(!result||!result.order_id)throw new Error("অর্ডার সংরক্ষণ করা যায়নি।");
     items.forEach(x=>{const p=data.products.find(p=>p.id===x.p.id);if(p)p.stock=Math.max(0,p.stock-Number(x.qty||0));});
-    data.cart=[];persist("order placed");
-    // Re-fetch the authoritative stock from Supabase so the admin panel/storefront cannot show stale stock.
-    try{
-      const freshRows=await fetchCloudProducts();
-      const freshById=new Map(freshRows.map(r=>[String(r.id),r]));
-      data.products=data.products.map(p=>{const row=freshById.get(String(p.id));return row?normalizeCloudProduct(row,p):p;});
-      persist("stock refresh after order");
-    }catch(refreshErr){console.warn("Stock refresh after order failed",refreshErr);}
-    renderAll();
+    data.cart=[];persist("order placed");renderAll();
     if(popup){popup.location.href=url;}else{window.location.href=url;}
     showToast("অর্ডার সংরক্ষিত হয়েছে। স্টকও আপডেট হয়েছে।");
     closeModal("checkoutModal");
