@@ -772,16 +772,30 @@ $("checkoutForm").addEventListener("submit",async function(e){
   const items=getCheckoutItems();if(!items.length)return showToast("কার্ট খালি।","bad");
   const name=$("coName").value.trim(),phone=$("coPhone").value.trim(),district=$("coDistrict").value,upazila=$("coUpazila").value,village=$("coVillage").value.trim(),address=$("coAddress").value.trim(),deliveryArea=$("coDeliveryArea").value,size=$("coSize").value,color=$("coColor").value,note=$("coNote").value.trim();
   if(!name||!phone||!district||!upazila||!village||!deliveryArea)return showToast("নাম, মোবাইল, জেলা, থানা/উপজেলা, গ্রাম/এলাকা ও ডেলিভারি এলাকা পূরণ করুন।","bad");
-  const lines=items.map(x=>`🛍️ পণ্য: ${x.p.name}\n🏷️ কোড: ${productCode(x.p)}\n🔢 পরিমাণ: ${x.qty}\n💰 দাম: ${money(x.p.price)}\n💵 মোট: ${money(x.p.price*x.qty)}\n🖼️ পণ্যের ছবি: ${productImage(x.p)}`).join("\n\n");
+  const imageUrls=[];
+  for(const x of items){
+    const imageUrl=await ensurePublicProductImage(x.p);
+    imageUrls.push({id:x.p.id,url:imageUrl});
+  }
+  const imageById=new Map(imageUrls.map(x=>[String(x.id),x.url]));
+  const lines=items.map(x=>{
+    const imageUrl=imageById.get(String(x.p.id))||"";
+    return `🛍️ পণ্য: ${x.p.name}\n🏷️ কোড: ${productCode(x.p)}\n🔢 পরিমাণ: ${x.qty}\n💰 দাম: ${money(x.p.price)}\n💵 মোট: ${money(x.p.price*x.qty)}\n🖼️ ছবির লিংক: ${imageUrl||"পাবলিক ছবি পাওয়া যায়নি"}`;
+  }).join("\n\n");
   const subtotal=items.reduce((s,x)=>s+x.p.price*x.qty,0);
   const delivery=deliveryArea==="inside"?80:160;
   const total=subtotal+delivery;
-  let message=`🛍️ ${data.settings.storeName} অর্ডার\n\n👤 নাম: ${name}\n📱 মোবাইল: ${phone}\n📍 জেলা: ${district}\n🏢 থানা/উপজেলা: ${upazila}\n🏠 গ্রাম/এলাকা: ${village}\n📝 বিস্তারিত ঠিকানা: ${address||"দেওয়া হয়নি"}\n\n${lines}\n\n📏 সাইজ: ${size||"নির্বাচন করা হয়নি"}\n🎨 রঙ: ${color||"নির্বাচন করা হয়নি"}\n💬 নোট: ${note||"নেই"}\n\n💰 পণ্যের মোট: ${money(subtotal)}\n🚚 কুরিয়ার চার্জ: ${money(delivery)}\n💰 সর্বমোট: ${money(total)}\n\n🚚 ডেলিভারি: ${deliveryArea==="inside"?"ঢাকার ভিতরে":"ঢাকার বাইরে"}\n📦 কুরিয়ার চার্জ অগ্রিম পরিশোধ করতে হবে।\n💳 পণ্যের মূল্য Cash on Delivery (COD)।\n👕 কুরিয়ার কর্তৃপক্ষের নিয়ম অনুযায়ী পণ্য চেক করে নিতে পারবেন।\n\n✅ আমি অর্ডারটি নিশ্চিত করতে চাই।`;
+  const deliveryLabel=deliveryArea==="inside"?"ঢাকার ভিতরে":"ঢাকার বাইরে";
+  const compactLines=items.map(x=>{
+    const imageUrl=imageById.get(String(x.p.id))||"";
+    return `🛍️ ${x.p.name} | 🏷️ ${productCode(x.p)}\n🔢 ${x.qty} × ${money(x.p.price)} = ${money(x.p.price*x.qty)}${imageUrl?`\n🖼️ ছবি: ${imageUrl}`:""}`;
+  }).join("\n\n");
+  let message=`🛍️ ${data.settings.storeName} — অর্ডার\n\n👤 ${name} | 📱 ${phone}\n📍 ${district}, ${upazila}\n🏠 ${village}\n📝 ${address||"দেওয়া হয়নি"}\n\n${compactLines}\n\n📏 সাইজ: ${size||"নির্বাচন করা হয়নি"} | 🎨 রঙ: ${color||"নির্বাচন করা হয়নি"}\n💬 নোট: ${note||"নেই"}\n\n💰 পণ্যের মোট: ${money(subtotal)}\n🚚 ডেলিভারি: ${deliveryLabel} | চার্জ: ${money(delivery)}\n💵 সর্বমোট: ${money(total)}\n\n📦 কুরিয়ার চার্জ অগ্রিম পরিশোধ করতে হবে।\n💳 পণ্যের মূল্য Cash on Delivery (COD)।\n👕 কুরিয়ার কর্তৃপক্ষের নিয়ম অনুযায়ী পণ্য চেক করে নিতে পারবেন।\n\n✅ অর্ডারটি নিশ্চিত করতে চাই।`;
   const url=whatsappUrl(message);if(url==="#")return;
   const popup=window.open("about:blank","_blank");
   if(!supabaseReady){if(popup)popup.close();return showToast("অর্ডার সংরক্ষণের জন্য Supabase সংযোগ প্রয়োজন।","bad");}
   try{
-    const payload={p_customer_name:name,p_phone:phone,p_district:district,p_upazila:upazila,p_village:village,p_address:address||"",p_size:size||"",p_color:color||"",p_note:note||"",p_items:items.map(x=>({product_id:String(x.p.id),product_name:x.p.name,product_code:productCode(x.p),price:Number(x.p.price||0),quantity:Number(x.qty||1),image:productImage(x.p)})),p_total:Number(total||0)};
+    const payload={p_customer_name:name,p_phone:phone,p_district:district,p_upazila:upazila,p_village:village,p_address:address||"",p_size:size||"",p_color:color||"",p_note:note||"",p_items:items.map(x=>({product_id:String(x.p.id),product_name:x.p.name,product_code:productCode(x.p),price:Number(x.p.price||0),quantity:Number(x.qty||1),image:imageById.get(String(x.p.id))||productImage(x.p)})),p_total:Number(total||0)};
     const saved=await cloudFetch('/rest/v1/rpc/place_order',{method:'POST',body:JSON.stringify(payload)});
     const result=Array.isArray(saved)?saved[0]:saved;
     if(!result||!result.order_id)throw new Error("অর্ডার সংরক্ষণ করা যায়নি।");
@@ -921,6 +935,22 @@ async function uploadCloudImage(file){
   });
   if(!res.ok){ const t=await res.text(); throw new Error('Image upload failed: '+t); }
   return SUPABASE_URL+'/storage/v1/object/public/product-images/'+path;
+}
+
+// WhatsApp needs a real public image URL. Older/local products may still have a data: image,
+// so upload that image to Supabase first and reuse the resulting public URL.
+async function ensurePublicProductImage(p){
+  const img=String(p?.image||"");
+  if(!img || img===FALLBACK_IMG || img.startsWith("blob:")) return "";
+  if(/^https?:\/\//i.test(img)) return img;
+  if(/^data:image\//i.test(img) && supabaseReady){
+    const blob=await (await fetch(img)).blob();
+    const publicUrl=await uploadCloudImage(new File([blob],"product-image."+(blob.type.split("/")[1]||"jpg"),{type:blob.type||"image/jpeg"}));
+    p.image=publicUrl;
+    try{ await upsertCloudProduct(p); }catch(e){ console.warn("Could not sync converted product image",e); }
+    return publicUrl;
+  }
+  return img;
 }
 
 async function upsertCloudProduct(p){
