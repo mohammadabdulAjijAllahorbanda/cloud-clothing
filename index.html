@@ -160,6 +160,19 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
 @media(max-width:1050px){.product-grid{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(3,1fr)}.category-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:800px){.admin-workspace{grid-template-columns:1fr}.admin-preview-panel{position:relative;top:auto}.navlinks{display:none}.mobile-toggle{display:grid}.nav-actions .whatsapp-nav{display:none}.product-grid{grid-template-columns:repeat(2,1fr)}.story-grid,.product-detail,.color-layout{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.collection-strip{grid-template-columns:1fr}.hero-card{min-height:540px}.admin-side{transform:translateX(-105%);transition:.25s}.admin-side.open{transform:none}.admin-main{margin-left:0;width:100%;padding:15px}.mobile-admin-toggle{display:inline-grid}.stats{grid-template-columns:repeat(2,1fr)}.admin-table-wrap{overflow:auto}.admin-table{min-width:720px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.preset-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.container{width:min(100% - 22px,1180px)}.nav{height:65px}.logo{font-size:20px}.hero{padding-top:12px}.hero-card{border-radius:18px;min-height:550px}.hero-content{padding:28px 22px}.section{padding:55px 0}.category-grid{grid-template-columns:1fr 1fr}.category-card{min-height:150px;padding:15px}.product-grid{gap:9px}.product-info{padding:11px}.product-title{font-size:14px}.product-actions .btn{font-size:10px;padding:9px 6px}.footer-grid{grid-template-columns:1fr}.footer-bottom{display:block}.footer-bottom>*{margin:5px 0}.whatsapp-inner{display:block}.whatsapp-inner .btn{margin-top:12px}.stats{grid-template-columns:1fr 1fr}.admin-top{align-items:flex-start}.color-list{grid-template-columns:1fr}.login-card{padding:22px}}
+
+/* EASY CHECKOUT */
+.checkout-summary{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:16px}
+.checkout-item{padding:12px 0;border-bottom:1px solid var(--border)}
+.checkout-item:last-child{border-bottom:0}
+.checkout-item-head{display:flex;gap:10px;align-items:center}
+.checkout-item-head img{width:58px;height:66px;object-fit:cover;border-radius:9px;background:var(--surface)}
+.checkout-item-title{font-weight:800}
+.checkout-item-price{font-size:12px;color:var(--muted)}
+.checkout-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.checkout-note{font-size:12px;color:var(--muted);margin:8px 0 0}
+@media(max-width:600px){.checkout-options{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -337,6 +350,26 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
   <div class="drawer-body" id="cartBody"></div>
   <div class="cart-foot"><div class="total-row"><span>Subtotal</span><span id="cartTotal">$0.00</span></div><button class="btn btn-primary" style="width:100%" onclick="checkoutWhatsApp()">Order via WhatsApp</button><button class="btn btn-outline" style="width:100%;margin-top:8px" onclick="clearCart()">Clear cart</button></div>
 </div>
+
+<div class="modal-backdrop" id="checkoutModal">
+  <div class="modal large">
+    <div class="modal-head"><h3 style="font-family:'DM Sans'">Checkout</h3><button class="icon-btn" onclick="closeModal('checkoutModal')">×</button></div>
+    <div class="modal-body">
+      <div id="checkoutSummary" class="checkout-summary"></div>
+      <form id="checkoutForm">
+        <div class="form-grid">
+          <div class="field"><label>Full Name *</label><input id="checkoutName" required placeholder="Aziz"></div>
+          <div class="field"><label>Phone Number *</label><input id="checkoutPhone" type="tel" required placeholder="017********"></div>
+          <div class="field full"><label>Address *</label><textarea id="checkoutAddress" required rows="3" placeholder="House, road, area, city"></textarea></div>
+          <div class="field full"><label>Order Note (optional)</label><textarea id="checkoutNote" rows="2" placeholder="Any extra information..."></textarea></div>
+        </div>
+        <p class="checkout-note">Size and color are selected for each product above. After confirming, WhatsApp will open with your complete order message.</p>
+        <div class="admin-actions"><button type="button" class="btn btn-outline" onclick="closeModal('checkoutModal')">Back</button><button class="btn btn-primary" type="submit">Confirm Order on WhatsApp</button></div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <div class="toast-wrap" id="toastWrap"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -633,13 +666,36 @@ function removeCart(id){data.cart=data.cart.filter(x=>x.id!==id);if(persist("rem
 function clearCart(){if(!data.cart.length)return;data.cart=[];if(persist("clear cart")){renderCart();showToast("Cart cleared");}}
 function openCart(){$("cartDrawer").classList.add("open")}
 function closeCart(){$("cartDrawer").classList.remove("open")}
-function checkoutWhatsApp(){
-  if(!data.cart.length)return showToast("Your cart is empty.","bad");
-  const items=data.cart.map(i=>({...i,p:data.products.find(p=>p.id===i.id)})).filter(x=>x.p);
+function getCheckoutItems(){
+  return data.cart.map(i=>({...i,p:data.products.find(p=>p.id===i.id)})).filter(x=>x.p);
+}
+function openCheckout(){
+  const items=getCheckoutItems();
   if(!items.length)return showToast("Your cart is empty.","bad");
-  const lines=items.map(x=>`Product: ${x.p.name}\nQuantity: ${x.qty}\nPrice: ${money(x.p.price)}\nItem total: ${money(x.p.price*x.qty)}`).join("\n\n");
   const total=items.reduce((s,x)=>s+x.p.price*x.qty,0);
-  const url=whatsappUrl(`Hello ${data.settings.storeName},\n\nI would like to order:\n\n${lines}\n\nTotal: ${money(total)}\n\nPlease confirm my order.`);
+  $("checkoutSummary").innerHTML=items.map((x,i)=>`<div class="checkout-item">
+    <div class="checkout-item-head"><img src="${escapeAttr(productImage(x.p))}" alt=""><div style="flex:1"><div class="checkout-item-title">${escapeHtml(x.p.name)}</div><div class="checkout-item-price">${money(x.p.price)} × ${x.qty} = ${money(x.p.price*x.qty)}</div></div></div>
+    <div class="checkout-options">
+      <div class="field"><label>Size</label><select id="checkoutSize_${i}"><option value="">Select size</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select></div>
+      <div class="field"><label>Color</label><input id="checkoutColor_${i}" placeholder="Black"></div>
+    </div>
+  </div>`).join("")+`<div class="total-row" style="margin-top:12px"><strong>Total</strong><strong>${money(total)}</strong></div>`;
+  $("checkoutForm").reset();
+  $("checkoutModal").classList.add("open");
+}
+function checkoutWhatsApp(){openCheckout();}
+function submitCheckout(){
+  const items=getCheckoutItems();
+  if(!items.length){showToast("Your cart is empty.","bad");return;}
+  const name=$("checkoutName").value.trim(),phone=$("checkoutPhone").value.trim(),address=$("checkoutAddress").value.trim(),note=$("checkoutNote").value.trim();
+  const lines=items.map((x,i)=>{
+    const size=$("checkoutSize_"+i).value||"Not specified";
+    const color=$("checkoutColor_"+i).value.trim()||"Not specified";
+    return `Product: ${x.p.name}\nSize: ${size}\nColor: ${color}\nQuantity: ${x.qty}\nPrice: ${money(x.p.price)}\nItem total: ${money(x.p.price*x.qty)}`;
+  }).join("\n\n");
+  const total=items.reduce((s,x)=>s+x.p.price*x.qty,0);
+  const msg=`Hello ${data.settings.storeName},\n\n🛍️ NEW ORDER\n\nCustomer Name: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n${lines}\n\nTotal: ${money(total)}${note?`\n\nNote: ${note}`:""}\n\nPlease confirm my order.`;
+  const url=whatsappUrl(msg);
   if(url!=="#")window.open(url,"_blank");
 }
 
@@ -653,12 +709,13 @@ function openProductDetail(id){
     <div class="price-row" style="font-size:20px;margin:16px 0">${money(p.price)} ${p.oldPrice>p.price?`<span class="old-price">${money(p.oldPrice)}</span>`:""}</div>
     <p class="muted">${escapeHtml(p.description)}</p><p><strong>${p.stock>0?(p.stock<=5?"Only "+p.stock+" left":"In stock"):"Out of stock"}</strong></p>
     <div class="qty" style="margin:18px 0"><button onclick="detailQty(-1)">−</button><span id="detailQty">1</span><button onclick="detailQty(1)">+</button></div>
-    <div style="display:flex;gap:9px;flex-wrap:wrap"><button class="btn btn-primary" ${p.stock<=0?"disabled":""} onclick="addDetailToCart()">Add to Cart</button><a class="btn btn-outline" href="${escapeAttr(productWhatsApp(p,1))}" target="_blank">Order on WhatsApp</a></div></div>
+    <div style="display:flex;gap:9px;flex-wrap:wrap"><button class="btn btn-primary" ${p.stock<=0?"disabled":""} onclick="addDetailToCart()">Add to Cart</button><button class="btn btn-outline" onclick="buyNowToCheckout()">Order on WhatsApp</button></div></div>
   </div>`;
   $("detailModal").classList.add("open");
 }
 function detailQty(delta){const el=$("detailQty");let n=Number(el.textContent)+delta;n=Math.max(1,Math.min(activeDetailProduct.stock||1,n));el.textContent=n}
 function addDetailToCart(){const n=Number($("detailQty").textContent);addToCart(activeDetailProduct.id,n);closeModal("detailModal");openCart();}
+function buyNowToCheckout(){const n=Number($("detailQty").textContent);if(!activeDetailProduct||activeDetailProduct.stock<=0)return showToast("Product is out of stock.","bad");addToCart(activeDetailProduct.id,n);closeModal("detailModal");openCheckout();}
 function selectDetailImage(btn,src){$("detailMainImg").src=src;document.querySelectorAll(".thumb").forEach(x=>x.classList.remove("active"));btn.classList.add("active");}
 function closeModal(id){$(id).classList.remove("open")}
 
@@ -784,7 +841,7 @@ async function upsertCloudProduct(p){
 }
 
 async function uploadDesignImage(file,folder){
-  const bucket = folder === 'categories' ? 'category-images' : folder === 'collections' ? 'collection-images' : 'hiro-images';
+  const bucket = folder === 'categories' ? 'category-images' : 'hero-images';
   const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
   const path=folder+'/'+Date.now()+'_'+Math.random().toString(36).slice(2,9)+'.'+ext;
   const res=await fetch(SUPABASE_URL+'/storage/v1/object/'+bucket+'/'+encodeURIComponent(path),{
@@ -1264,6 +1321,7 @@ $("mobileNavBtn").addEventListener("click",()=>{
   if(n.style.display==="flex"){n.style.position="absolute";n.style.left="10px";n.style.right="10px";n.style.top="65px";n.style.padding="15px";n.style.background="var(--surface)";n.style.border="1px solid var(--border)";n.style.borderRadius="14px";n.style.flexDirection="column";n.style.alignItems="flex-start";}
 });
 $("cartBtn").addEventListener("click",openCart);
+$("checkoutForm").addEventListener("submit",e=>{e.preventDefault();submitCheckout();});
 $("searchNavBtn").addEventListener("click",()=>{scrollToShop();setTimeout(()=>$("searchInput").focus(),350)});
 ["searchInput","filterCategory","filterCollection","filterStock","filterTag","sortProducts"].forEach(id=>$(id).addEventListener("input",renderProducts));
 $("searchBtn").addEventListener("click",renderProducts);
