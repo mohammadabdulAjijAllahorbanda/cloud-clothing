@@ -178,23 +178,20 @@ header.site-header{position:sticky;top:0;z-index:40;background:color-mix(in srgb
 @media(max-width:800px){.admin-workspace{grid-template-columns:1fr}.admin-preview-panel{position:relative;top:auto}.navlinks{display:none}.mobile-toggle{display:grid}.nav-actions .whatsapp-nav{display:none}.product-grid{grid-template-columns:repeat(2,1fr)}.story-grid,.product-detail,.color-layout{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.collection-strip{grid-template-columns:1fr}.hero-card{min-height:540px}.admin-side{transform:translateX(-105%);transition:.25s}.admin-side.open{transform:none}.admin-main{margin-left:0;width:100%;padding:15px}.mobile-admin-toggle{display:inline-grid}.stats{grid-template-columns:repeat(2,1fr)}.admin-table-wrap{overflow:auto}.admin-table{min-width:720px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.preset-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.container{width:min(100% - 22px,1180px)}.nav{height:65px}.logo{font-size:20px}.hero{padding-top:12px}.hero-card{border-radius:18px;min-height:550px}.hero-content{padding:28px 22px}.section{padding:55px 0}.category-grid{grid-template-columns:1fr 1fr}.category-card{min-height:150px;padding:15px}.product-grid{gap:9px}.product-info{padding:11px}.product-title{font-size:14px}.product-actions .btn{font-size:10px;padding:9px 6px}.footer-grid{grid-template-columns:1fr}.footer-bottom{display:block}.footer-bottom>*{margin:5px 0}.whatsapp-inner{display:block}.whatsapp-inner .btn{margin-top:12px}.stats{grid-template-columns:1fr 1fr}.admin-top{align-items:flex-start}.color-list{grid-template-columns:1fr}.login-card{padding:22px}}
 
-/* Cloud Clothing — logo, mobile navigation and checkout visibility */
-.brand-logo-image{height:42px;max-width:150px;object-fit:contain;display:inline-block;vertical-align:middle;margin-right:8px}
-.footer-logo-image{height:38px;max-width:135px;object-fit:contain;display:inline-block;vertical-align:middle;margin-right:8px}
-body.checkout-open .cc-mobile-bottom-nav,body.checkout-open #mobileAdminBtn{display:none!important}
-body.checkout-open{padding-bottom:0!important}
-/* Cloud Clothing — soft fixed mobile navigation */
+/* Cloud Clothing branding and mobile quick navigation */
+.brand-logo-image{display:inline-block;width:42px;height:42px;object-fit:contain;vertical-align:middle;margin-right:9px;border-radius:8px}
+.footer-logo-image{width:38px;height:38px;object-fit:contain;vertical-align:middle;margin-right:8px;border-radius:7px}
 .cc-mobile-bottom-nav{display:none}
 @media(max-width:800px){
-  body{padding-bottom:100px}
-  .cc-mobile-bottom-nav{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:9980;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:center;gap:2px;padding:9px 8px 7px;border:1px solid rgba(107,83,60,.12);border-radius:28px;background:rgba(255,250,242,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 12px 36px rgba(67,45,28,.16)}
-  .cc-bottom-item{min-width:0;min-height:49px;border:0;background:transparent;color:#33271f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-radius:16px;padding:3px 1px;font-size:11px;font-weight:600;line-height:1.15;cursor:pointer;-webkit-tap-highlight-color:transparent}
-  .cc-bottom-item svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-  .cc-bottom-item.is-active{color:#a85e3c}
-  .cc-bottom-item:active{background:#f0e2d2;transform:scale(.97)}
-  .cc-bottom-whatsapp{width:62px;height:62px;min-height:62px;justify-self:center;align-self:center;margin-top:-24px;border-radius:50%;background:#07965d;color:white;box-shadow:0 8px 22px rgba(0,119,72,.28);border:4px solid rgba(255,250,242,.96)}
-  .cc-bottom-whatsapp svg{width:29px;height:29px}
-  #mobileAdminBtn{bottom:calc(88px + env(safe-area-inset-bottom,0px))!important}
+  body{padding-bottom:78px}
+  .cc-mobile-bottom-nav{position:fixed;z-index:90;left:10px;right:10px;bottom:calc(9px + env(safe-area-inset-bottom));display:flex;align-items:stretch;justify-content:space-around;gap:2px;padding:8px 4px;background:rgba(255,253,249,.97);border:1px solid var(--border);border-radius:18px;box-shadow:0 8px 28px #21190f25;backdrop-filter:blur(12px)}
+  .cc-mobile-bottom-nav a,.cc-mobile-bottom-nav button{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;background:transparent;color:var(--text);text-decoration:none;padding:2px 0;font:inherit;cursor:pointer}
+  .cc-mobile-bottom-nav span{font-size:20px;line-height:22px;position:relative}
+  .cc-mobile-bottom-nav small{font-size:9px;line-height:12px;font-weight:700;white-space:nowrap}
+  .cc-mobile-bottom-nav i{position:absolute;top:-6px;right:-10px;min-width:15px;height:15px;border-radius:50%;background:var(--accent);color:white;font-size:9px;font-style:normal;display:flex;align-items:center;justify-content:center}
+  body.checkout-open{padding-bottom:0}
+  body.checkout-open .cc-mobile-bottom-nav{display:none!important}
+  body.checkout-open .mobile-admin-toggle{display:none!important}
 }
 @media(min-width:801px){.cc-mobile-bottom-nav{display:none!important}}
 
@@ -289,6 +286,16 @@ body.checkout-open{padding-bottom:0!important}
   <div class="container footer-bottom"><span>© <span id="year"></span> Cloud Clothing</span><span><span id="dataModeStatus">Connecting to cloud…</span></span></div>
 </footer>
 </div>
+
+<!-- Mobile floating navigation: storefront only; hidden during checkout -->
+<nav class="cc-mobile-bottom-nav" id="ccMobileBottomNav" aria-label="Quick navigation">
+  <a href="#home" aria-label="Home"><span>⌂</span><small>Home</small></a>
+  <a href="#shop" aria-label="Shop"><span>▦</span><small>Shop</small></a>
+  <a href="#" id="ccFloatingWhatsApp" aria-label="WhatsApp" target="_blank" rel="noopener"><span>☏</span><small>WhatsApp</small></a>
+  <button type="button" id="ccFloatingCart" aria-label="Cart"><span>🛒<i id="ccFloatingCartCount">0</i></span><small>Cart</small></button>
+  <button type="button" id="ccFloatingSearch" aria-label="Search"><span>⌕</span><small>Search</small></button>
+  <button type="button" id="ccFloatingLogin" aria-label="Admin login"><span>♙</span><small>Login</small></button>
+</nav>
 
 <div id="adminApp" class="admin-wrap">
   <aside class="admin-side" id="adminSide">
@@ -523,6 +530,7 @@ function migrate(raw){
   d.collections = Array.isArray(d.collections)?d.collections:deepClone(DEFAULT_DATA.collections);
   d.collections = d.collections.map((c,i)=>({...c,image:c.image||FALLBACK_IMG,order:Number(c.order)||i+1,visible:c.visible!==false}));
   d.settings = mergeObject(DEFAULT_DATA.settings,d.settings);
+  if(typeof d.settings.logoImage!=="string")d.settings.logoImage="";
   d.settings.sections = Array.isArray(d.settings.sections)?d.settings.sections:deepClone(DEFAULT_DATA.settings.sections);
   d.settings.sections = d.settings.sections.map((x,i)=>({...x,order:Number(x.order)||i+1,visible:x.visible!==false}));
   d.settings.sections.sort((a,b)=>a.order-b.order).forEach((x,i)=>x.order=i+1);
@@ -573,11 +581,6 @@ function visibleProducts(){return data.products.filter(p=>p.visible);}
 function getCategory(name){return data.categories.find(c=>c.name===name);}
 function getCollection(name){return data.collections.find(c=>c.name===name);}
 function productImage(p){return p.image || FALLBACK_IMG;}
-function productCode(p){
-  if(p && p.code) return String(p.code);
-  const id=String(p?.id || "").replace(/[^a-zA-Z0-9]/g,"").slice(-8).toUpperCase();
-  return "CC-"+(id || "PRODUCT");
-}
 function whatsappUrl(message){
   const n=(data.settings.whatsapp||"").replace(/[^\d]/g,"");
   if(!n){showToast("Add a WhatsApp number in Settings first.","bad");return "#";}
@@ -594,11 +597,10 @@ function applyTheme(){
   Object.entries(data.theme).forEach(([k,v])=>document.documentElement.style.setProperty("--"+k,v));
 }
 function renderStore(){
-  const logoImage = data.settings.logoImage || "";
-  const logoImgHtml = logoImage ? `<img class="brand-logo-image" src="${escapeAttr(logoImage)}" alt="${escapeAttr(data.settings.storeName)} logo">` : "";
-  const footerImgHtml = logoImage ? `<img class="footer-logo-image" src="${escapeAttr(logoImage)}" alt="${escapeAttr(data.settings.storeName)} logo">` : "";
-  $("brandLogo").innerHTML = `${logoImgHtml}${escapeHtml(data.settings.storeName)}<small>PREMIUM FASHION</small>`;
-  $("footerLogo").innerHTML = `${footerImgHtml}${escapeHtml(data.settings.storeName)}<small>PREMIUM FASHION</small>`;
+  const logo = data.settings.logoImage ? `<img class="brand-logo-image" src="${escapeAttr(data.settings.logoImage)}" alt="${escapeAttr(data.settings.storeName)} logo">` : "";
+  const footerLogo = data.settings.logoImage ? `<img class="footer-logo-image" src="${escapeAttr(data.settings.logoImage)}" alt="">` : "";
+  $("brandLogo").innerHTML = `${logo}${escapeHtml(data.settings.storeName)}<small>PREMIUM FASHION</small>`;
+  $("footerLogo").innerHTML = `${footerLogo}${escapeHtml(data.settings.storeName)}<small>PREMIUM FASHION</small>`;
   $("footerTagline").textContent=data.settings.tagline;
   $("heroEyebrow").textContent=data.settings.storeName.toUpperCase();
   $("heroTitle").innerHTML=data.hero.title;
@@ -609,6 +611,7 @@ function renderStore(){
   $("heroOverlay").style.background=`linear-gradient(90deg,rgba(20,16,12,${Math.min(0.9,Number(data.hero.overlay||65)/100)}),rgba(20,16,12,.15) 65%,rgba(20,16,12,.05))`;
   $("heroCard").style.display=data.hero.visible===false?"none":"flex";
   const hw=whatsappHrefSafe();
+  if($("ccFloatingWhatsApp"))$("ccFloatingWhatsApp").href=hw;
   $("heroWhatsapp").href=hw;$("headerWhatsapp").href=hw;$("bandWhatsapp").href=hw;
   renderCategories();renderCollections();populateFilters();renderProducts();renderFeatured();renderCart();
   renderStoreSections();
@@ -775,7 +778,7 @@ function getCheckoutItems(){return data.cart.map(i=>({...i,p:data.products.find(
 function renderCheckoutSummary(){
   const box=$("checkoutSummary"),items=getCheckoutItems();if(!box)return;
   const total=items.reduce((s,x)=>s+x.p.price*x.qty,0);
-  box.innerHTML=items.map(x=>`<div class="checkout-summary-row" style="display:flex;align-items:center;gap:12px"><img src="${escapeAttr(productImage(x.p))}" alt="" style="width:64px;height:64px;object-fit:cover;border-radius:10px;border:1px solid var(--border)"><span style="flex:1"><strong>${escapeHtml(x.p.name)}</strong><small style="display:block;color:var(--muted)">কোড: ${escapeHtml(productCode(x.p))} · ${x.qty} × ${money(x.p.price)}</small></span><strong>${money(x.p.price*x.qty)}</strong></div>`).join("")+`<div class="checkout-summary-row checkout-summary-total"><span>সর্বমোট</span><strong>${money(total)}</strong></div>`;
+  box.innerHTML=items.map(x=>`<div class="checkout-summary-row"><span>${escapeHtml(x.p.name)} × ${x.qty}</span><strong>${money(x.p.price*x.qty)}</strong></div>`).join("")+`<div class="checkout-summary-row checkout-summary-total"><span>সর্বমোট</span><strong>${money(total)}</strong></div>`;
 }
 function openCheckoutFromCart(){if(!getCheckoutItems().length)return showToast("কার্ট খালি।","bad");closeCart();openCheckout();}
 function openCheckoutSingle(id){const p=data.products.find(x=>x.id===id);if(!p||p.stock<=0)return showToast("পণ্যটি এখন স্টকে নেই।","bad");data.cart=[{id:p.id,qty:1}];if(!persist("buy now"))return showToast("অর্ডার প্রস্তুত করা যায়নি।","bad");renderCart();openCheckout();}
@@ -791,8 +794,7 @@ $("checkoutForm").addEventListener("submit",async function(e){
   const total=items.reduce((s,x)=>s+x.p.price*x.qty,0);
   const message=`🛍️ ${data.settings.storeName} অর্ডার\n\n👤 নাম: ${name}\n📱 মোবাইল: ${phone}\n📍 জেলা: ${district}\n🏢 থানা/উপজেলা: ${upazila}\n🏠 গ্রাম/এলাকা: ${village}\n📝 বিস্তারিত ঠিকানা: ${address||"দেওয়া হয়নি"}\n\n${lines}\n\n📏 সাইজ: ${size||"নির্বাচন করা হয়নি"}\n🎨 রঙ: ${color||"নির্বাচন করা হয়নি"}\n💬 নোট: ${note||"নেই"}\n\n💰 সর্বমোট: ${money(total)}\n\n✅ আমি অর্ডারটি নিশ্চিত করতে চাই।`;
   const url=whatsappUrl(message);if(url==="#")return;
-  const popup=window.open("about:blank","_blank");
-  if(!supabaseReady){if(popup)popup.close();return showToast("অর্ডার সংরক্ষণের জন্য Supabase সংযোগ প্রয়োজন।","bad");}
+  if(!supabaseReady)return showToast("অর্ডার সংরক্ষণের জন্য Supabase সংযোগ প্রয়োজন।","bad");
   try{
     const payload={p_customer_name:name,p_phone:phone,p_district:district,p_upazila:upazila,p_village:village,p_address:address||"",p_size:size||"",p_color:color||"",p_note:note||"",p_items:items.map(x=>({product_id:String(x.p.id),product_name:x.p.name,product_code:productCode(x.p),price:Number(x.p.price||0),quantity:Number(x.qty||1),image:productImage(x.p)})),p_total:Number(total||0)};
     const saved=await cloudFetch('/rest/v1/rpc/place_order',{method:'POST',body:JSON.stringify(payload)});
@@ -800,11 +802,10 @@ $("checkoutForm").addEventListener("submit",async function(e){
     if(!result||!result.order_id)throw new Error("অর্ডার সংরক্ষণ করা যায়নি।");
     items.forEach(x=>{const p=data.products.find(p=>p.id===x.p.id);if(p)p.stock=Math.max(0,p.stock-Number(x.qty||0));});
     data.cart=[];persist("order placed");renderAll();
-    if(popup){popup.location.href=url;}else{window.location.href=url;}
+    window.open(url,"_blank");
     showToast("অর্ডার সংরক্ষিত হয়েছে। স্টকও আপডেট হয়েছে।");
     closeModal("checkoutModal");
   }catch(err){
-    if(typeof popup!=="undefined" && popup) popup.close();
     console.error("Order save failed",err);
     showToast("অর্ডার সংরক্ষণ হয়নি: "+(err?.message||err),"bad");
   }
@@ -1282,7 +1283,7 @@ async function renderOrders(){
   <p class="muted">WhatsApp-এ পাঠানোর আগে প্রতিটি অর্ডার Supabase-এ সংরক্ষণ হয় এবং স্টক অটোমেটিক কমে যায়।</p>
   <div style="padding:15px;background:#f7f4ef;border-radius:12px"><strong>WhatsApp:</strong> ${escapeHtml(n)}<br><span class="muted">মোট সংরক্ষিত অর্ডার: ${list.length}</span></div></div>
   <div class="admin-panel"><div class="panel-head"><h3>সাম্প্রতিক অর্ডার</h3></div>
-  ${list.length?list.map(o=>{let items=[];try{items=typeof o.items==='string'?JSON.parse(o.items):(o.items||[])}catch(_){}return `<div style="padding:14px 0;border-bottom:1px solid var(--border)"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><strong>${escapeHtml(o.customer_name||'—')}</strong><span class="muted">${escapeHtml(new Date(o.created_at).toLocaleString('bn-BD'))}</span></div><div class="muted" style="margin-top:5px">📱 ${escapeHtml(o.phone||'')} · 📍 ${escapeHtml(o.district||'')} · ${escapeHtml(o.upazila||'')}</div><div style="margin-top:7px">${items.map(i=>`<span style="display:inline-flex;align-items:center;gap:8px;margin:3px 5px 3px 0;padding:6px 9px;background:#f7f4ef;border-radius:8px"><img src="${escapeAttr(i.image||FALLBACK_IMG)}" style="width:42px;height:42px;object-fit:cover;border-radius:7px"><span>${escapeHtml(i.product_name||'')}<small style="display:block;color:#777">${escapeHtml(i.product_code||'')} × ${Number(i.quantity||0)}</small></span></span>`).join('')}</div><strong style="display:block;margin-top:7px">মোট: ${money(o.total||0)}</strong></div>`}).join(''):`<div class="empty"><strong>এখনও কোনো অর্ডার নেই</strong><p class="muted">কাস্টমার Buy Now → Confirm Order করলে এখানে অর্ডার দেখা যাবে।</p></div>`}
+  ${list.length?list.map(o=>{let items=[];try{items=typeof o.items==='string'?JSON.parse(o.items):(o.items||[])}catch(_){}return `<div style="padding:14px 0;border-bottom:1px solid var(--border)"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><strong>${escapeHtml(o.customer_name||'—')}</strong><span class="muted">${escapeHtml(new Date(o.created_at).toLocaleString('bn-BD'))}</span></div><div class="muted" style="margin-top:5px">📱 ${escapeHtml(o.phone||'')} · 📍 ${escapeHtml(o.district||'')} · ${escapeHtml(o.upazila||'')}</div><div style="margin-top:7px">${items.map(i=>`<span style="display:inline-block;margin:3px 5px 3px 0;padding:6px 9px;background:#f7f4ef;border-radius:8px">${escapeHtml(i.product_name||'')} × ${Number(i.quantity||0)}</span>`).join('')}</div><strong style="display:block;margin-top:7px">মোট: ${money(o.total||0)}</strong></div>`}).join(''):`<div class="empty"><strong>এখনও কোনো অর্ডার নেই</strong><p class="muted">কাস্টমার Buy Now → Confirm Order করলে এখানে অর্ডার দেখা যাবে।</p></div>`}
   </div>`;
 }
 function renderAdminHero(){
@@ -1359,30 +1360,36 @@ function deleteModerator(id){if(!confirm("Delete this moderator?"))return;data.m
 
 function renderSettings(){
   const s=data.settings;
-  $("adminContent").innerHTML=`<div class="admin-panel"><div class="panel-head"><h3>Store Settings</h3></div><form id="settingsForm"><div class="form-grid">
+  $("adminContent").innerHTML=`<div class="admin-panel"><div class="panel-head"><h3>Logo & Branding</h3></div>
+  <p class="muted" style="margin-bottom:14px">Upload a PNG, JPG or WebP logo. It will appear in the header and footer and sync with your saved site settings.</p>
+  <form id="settingsForm"><div class="form-grid">
+  <div class="field full"><label>Store Logo Image</label><div class="upload-box"><input id="sLogoImage" type="file" accept="image/png,image/jpeg,image/webp"><div class="muted" style="font-size:11px;margin-top:6px">Recommended: square transparent PNG, under 2 MB.</div><img id="sLogoPreview" class="upload-preview" style="width:120px;height:120px;object-fit:contain;display:${s.logoImage?'block':'none'}" src="${s.logoImage?escapeAttr(s.logoImage):''}" alt="Logo preview"><button type="button" class="btn btn-outline" id="sRemoveLogo" style="margin-top:8px;${s.logoImage?'':'display:none'}">Remove logo</button></div></div>
   <div class="field"><label>Store Name</label><input id="sName" value="${escapeAttr(s.storeName)}"></div><div class="field"><label>Tagline</label><input id="sTagline" value="${escapeAttr(s.tagline)}"></div>
-  <div class="field full"><label>Store Logo Image</label><input id="sLogoImage" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml"><small class="muted">Upload a transparent PNG/WebP logo. Leave empty to keep the current logo.</small><div id="sLogoPreview" style="margin-top:8px">${s.logoImage?`<img src="${escapeAttr(s.logoImage)}" alt="Logo preview" style="max-width:160px;max-height:70px;object-fit:contain">`:''}</div></div>
-  <div class="field"><label>WhatsApp Number</label><input id="sWhatsapp" value="${escapeAttr(s.whatsapp)}" placeholder="Example: 9647..."></div><div class="field"><label>Currency</label><input id="sCurrency" value="${escapeAttr(s.currency)}" maxlength="8"></div>
+  <div class="field"><label>WhatsApp Number (country code included)</label><input id="sWhatsapp" value="${escapeAttr(s.whatsapp)}" placeholder="Example: 8801XXXXXXXXX"></div><div class="field"><label>Currency</label><input id="sCurrency" value="${escapeAttr(s.currency)}" maxlength="8"></div>
   <div class="field"><label>Facebook URL</label><input id="sFacebook" type="url" value="${escapeAttr(s.facebook)}"></div><div class="field"><label>Instagram URL</label><input id="sInstagram" type="url" value="${escapeAttr(s.instagram)}"></div>
   <div class="field"><label>TikTok URL</label><input id="sTikTok" type="url" value="${escapeAttr(s.tiktok)}"></div><div class="field"><label>Owner Username</label><input id="sOwnerUser" value="${escapeAttr(s.ownerUsername)}" autocomplete="off"></div>
   <div class="field"><label>Owner Password</label><input id="sOwnerPass" type="password" value="${escapeAttr(s.ownerPassword)}" autocomplete="new-password"></div>
-  </div><div class="admin-actions"><button class="btn btn-primary">Save Settings</button></div></form></div>
+  </div><div class="admin-actions"><button class="btn btn-primary">Save Branding & Settings</button></div></form></div>
+  <div class="admin-panel"><h3 style="font-family:'DM Sans';font-size:16px">Mobile navigation</h3><p class="muted">On mobile, the floating Home, Shop, WhatsApp, Cart, Search and Login buttons appear at the bottom. The bar automatically hides while checkout is open.</p></div>
   <div class="admin-panel"><h3 style="font-family:'DM Sans';font-size:16px">Local mode note</h3><p class="muted">Products and images sync with Supabase. Hero, theme and store settings are shared through Supabase; cart and login data remain local to this browser. This is not enterprise-level authentication and it does not provide server-side security.</p></div>`;
-  $("sLogoImage")?.addEventListener("change",async e=>{
-    const file=e.target.files?.[0];if(!file)return;
-    try{const preview=await compressImage(file,500,.88);$("sLogoPreview").innerHTML=`<img src="${escapeAttr(preview)}" alt="Logo preview" style="max-width:160px;max-height:70px;object-fit:contain">`;}catch(err){showToast("Logo preview could not be loaded.","bad");}
+  let pendingLogo = null;
+  const logoInput=$("sLogoImage"),logoPreview=$("sLogoPreview"),removeLogo=$("sRemoveLogo");
+  logoInput.addEventListener("change",async e=>{
+    const file=e.target.files&&e.target.files[0];if(!file)return;
+    if(!/^image\/(png|jpeg|webp)$/.test(file.type)){showToast("Please select a PNG, JPG or WebP image.","bad");e.target.value="";return;}
+    try{pendingLogo=await compressImage(file,420,.78);logoPreview.src=pendingLogo;logoPreview.style.display="block";removeLogo.style.display="inline-flex";}
+    catch(err){showToast("Could not read logo image.","bad");}
   });
+  removeLogo.addEventListener("click",()=>{pendingLogo="";logoInput.value="";logoPreview.removeAttribute("src");logoPreview.style.display="none";removeLogo.style.display="none";});
   $("settingsForm").addEventListener("submit",async e=>{
     e.preventDefault();
-    const logoFile=$("sLogoImage")?.files?.[0];
-    let logoImage=data.settings.logoImage||"";
-    if(logoFile){try{logoImage=await compressImage(logoFile,500,.88);}catch(err){showToast("Logo image could not be processed.","bad");return;}}
+    const logoImage=pendingLogo===null?s.logoImage:(pendingLogo||"");
     data.settings={...data.settings,logoImage,storeName:$("sName").value.trim()||"Cloud Clothing",tagline:$("sTagline").value.trim(),whatsapp:$("sWhatsapp").value.trim(),currency:$("sCurrency").value.trim()||"USD",facebook:$("sFacebook").value.trim(),instagram:$("sInstagram").value.trim(),tiktok:$("sTikTok").value.trim(),ownerUsername:$("sOwnerUser").value.trim()||"ajijul1",ownerPassword:$("sOwnerPass").value};
     if(!data.settings.ownerPassword)return showToast("Owner password cannot be empty.","bad");
     if(persist("settings save")){
       const cloudSaved=await saveSiteSettings("settings save");
       renderAll();renderAdminPage();
-      showToast(cloudSaved?"Settings saved successfully":"Settings saved locally, but cloud save failed.",cloudSaved?"good":"bad");
+      showToast(cloudSaved?"Branding and settings saved":"Saved locally, but cloud save failed.",cloudSaved?"good":"bad");
     }else showToast("Could not save settings.","bad");
   });
 }
@@ -1450,10 +1457,15 @@ $("mobileNavBtn").addEventListener("click",()=>{
 });
 $("cartBtn").addEventListener("click",openCart);
 $("searchNavBtn").addEventListener("click",()=>{scrollToShop();setTimeout(()=>$("searchInput").focus(),350)});
+$("ccFloatingCart").addEventListener("click",openCart);
+$("ccFloatingSearch").addEventListener("click",()=>{scrollToShop();setTimeout(()=>$("searchInput").focus(),350)});
+$("ccFloatingLogin").addEventListener("click",openAdminLogin);
+$("ccFloatingWhatsApp").addEventListener("click",e=>{const href=whatsappHrefSafe();if(href==="#"){e.preventDefault();showToast("Add a WhatsApp number in Admin Settings first.","bad");}else e.currentTarget.href=href;});
+
 ["searchInput","filterCategory","filterCollection","filterStock","filterTag","sortProducts"].forEach(id=>$(id).addEventListener("input",renderProducts));
 $("searchBtn").addEventListener("click",renderProducts);
 
-document.querySelectorAll(".modal-backdrop").forEach(b=>b.addEventListener("click",e=>{if(e.target===b){b.classList.remove("open");if(b.id==="checkoutModal")document.body.classList.remove("checkout-open");}}));
+document.querySelectorAll(".modal-backdrop").forEach(b=>b.addEventListener("click",e=>{if(e.target===b){b.classList.remove("open");if(b.id==="checkoutModal")document.body.classList.remove("checkout-open")}}));
 
 function enforceModeratorView(){
   if(!$("adminApp").classList.contains("active"))return;
@@ -1468,54 +1480,5 @@ async function init(){
 }
 init();
 </script>
-
-<nav class="cc-mobile-bottom-nav" id="ccMobileBottomNav" aria-label="Mobile navigation">
-  <button class="cc-bottom-item is-active" type="button" data-cc-nav="home" aria-label="Home">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><span>Home</span>
-  </button>
-  <button class="cc-bottom-item" type="button" data-cc-nav="shop" aria-label="Shop">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Shop</span>
-  </button>
-  <button class="cc-bottom-item cc-bottom-whatsapp" type="button" data-cc-nav="whatsapp" aria-label="WhatsApp">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.7a8.4 8.4 0 0 1-12.4 7.4L3 20l1-4.8A8.4 8.4 0 1 1 20.5 11.7Z"/><path d="M8.2 7.8c.3-.5.6-.5.9-.5h.4c.2 0 .4.1.5.4l.7 1.7c.1.2.1.4-.1.6l-.5.7c-.2.2-.2.4 0 .6.5.9 1.2 1.5 2.1 2 .2.1.4.1.6-.1l.7-.8c.2-.2.4-.2.6-.1l1.6.8c.2.1.3.3.3.5 0 .4-.2 1.1-.6 1.4-.5.4-1.1.6-1.8.5-1-.1-2.4-.7-3.8-2-1.2-1.1-2-2.5-2.2-3.5-.2-.9.1-1.7.6-2.2Z"/></svg>
-  </button>
-  <button class="cc-bottom-item" type="button" data-cc-nav="cart" aria-label="Cart">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l1 12H4L5 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg><span>Cart <span id="ccBottomCartCount"></span></span>
-  </button>
-  <button class="cc-bottom-item" type="button" data-cc-nav="search" aria-label="Search">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.3"/><path d="m16.2 16.2 4.5 4.5"/></svg><span>Search</span>
-  </button>
-</nav>
-<script>
-(()=>{
- const nav=document.getElementById('ccMobileBottomNav');
- if(!nav)return;
- nav.addEventListener('click',event=>{
-   const button=event.target.closest('[data-cc-nav]');
-   if(!button)return;
-   const action=button.dataset.ccNav;
-   nav.querySelectorAll('.cc-bottom-item').forEach(item=>item.classList.toggle('is-active',item===button && action!=='whatsapp'));
-   if(action==='home'){document.getElementById('home')?.scrollIntoView({behavior:'smooth',block:'start'});}
-   else if(action==='shop'){if(typeof scrollToShop==='function')scrollToShop();else document.getElementById('shop')?.scrollIntoView({behavior:'smooth',block:'start'});}
-   else if(action==='cart'){if(typeof openCart==='function')openCart();}
-   else if(action==='search'){
-     if(typeof scrollToShop==='function')scrollToShop();else document.getElementById('shop')?.scrollIntoView({behavior:'smooth',block:'start'});
-     window.setTimeout(()=>document.getElementById('searchInput')?.focus({preventScroll:true}),350);
-   }
-   else if(action==='whatsapp'){
-     const link=typeof whatsappHrefSafe==='function'?whatsappHrefSafe():'#';
-     if(link && link!=='#')window.open(link,'_blank','noopener,noreferrer');
-     else if(typeof showToast==='function')showToast('আগে Admin → Settings-এ WhatsApp নম্বর যোগ করুন।','bad');
-   }
- });
- const syncCount=()=>{const source=document.getElementById('cartCount'),target=document.getElementById('ccBottomCartCount');if(source&&target)target.textContent=source.textContent&&source.textContent!=='0'?source.textContent:'';};
- syncCount();
- const countNode=document.getElementById('cartCount');if(countNode)new MutationObserver(syncCount).observe(countNode,{childList:true,subtree:true,characterData:true});
-})();
-</script>
-
-<button id="mobileAdminBtn" type="button" aria-label="Admin Login">Admin</button>
-<style>#mobileAdminBtn{position:fixed;right:12px;bottom:12px;z-index:9990;border:1px solid rgba(177,138,74,.45);background:rgba(255,253,249,.96);color:#29241f;border-radius:999px;padding:9px 13px;font:700 11px/1 sans-serif;opacity:.92;box-shadow:0 5px 16px rgba(0,0,0,.14)}#mobileAdminBtn:active{opacity:1;transform:scale(.97)}@media(min-width:768px){#mobileAdminBtn{display:none}}</style>
-<script>document.getElementById("mobileAdminBtn")?.addEventListener("click",openAdminLogin);</script>
 </body>
 </html>
